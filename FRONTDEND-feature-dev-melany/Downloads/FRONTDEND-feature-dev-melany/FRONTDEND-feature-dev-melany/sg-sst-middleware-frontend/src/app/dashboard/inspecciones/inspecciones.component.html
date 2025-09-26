@@ -1,0 +1,170 @@
+<div class="card mb-3">
+  <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+    <strong>Inspecciones de Seguridad</strong>
+    <div>
+      <button class="btn btn-light btn-sm me-2" (click)="exportToPDF()">
+        <i class="fas fa-file-pdf"></i> Exportar a PDF
+      </button>
+      <button class="btn btn-light btn-sm" (click)="addNewArea()">
+        <i class="fas fa-plus"></i> Agregar Área
+      </button>
+    </div>
+  </div>
+
+  <div class="card-body" *ngIf="showTemplateSelector">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Seleccionar área predefinida:</label>
+        <select class="form-select" [(ngModel)]="selectedTemplate">
+          <option value="">-- Seleccione un área --</option>
+          <option *ngFor="let template of areaTemplates" [value]="template.name">{{ template.name }}</option>
+        </select>
+      </div>
+      <div class="col-md-6 d-flex align-items-end">
+        <button class="btn btn-success me-2" (click)="selectTemplate()" [disabled]="!selectedTemplate">
+          Usar plantilla
+        </button>
+        <button class="btn btn-secondary" (click)="cancelTemplateSelection()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <p class="text-muted">O crear un área personalizada:</p>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" [(ngModel)]="newAreaName" placeholder="Nombre del área personalizada">
+          <button class="btn btn-primary" type="button" (click)="createCustomArea()" [disabled]="!newAreaName.trim()">
+            Crear Área
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Área/Sección</th>
+          <th>Ítem de Inspección</th>
+          <th width="120">Cumplimiento (Sí/No)</th>
+          <th>Observaciones</th>
+          <th width="120">Cumplimiento (%)</th>
+          <th width="80">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let area of inspectionAreas; let i = index">
+          <tr *ngFor="let item of area.items; let j = index">
+            <td *ngIf="j === 0" [attr.rowspan]="area.items.length + (area.isAddingNew ? 1 : 0)">
+              {{ area.name }}
+              <button class="btn btn-sm btn-outline-danger ms-2" (click)="removeArea(i)" title="Eliminar área">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+            <td>
+              <input type="text" class="form-control form-control-sm" [(ngModel)]="item.name">
+            </td>
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="si_{{i}}_{{j}}" [(ngModel)]="item.compliance"
+                  (change)="calculateCompliancePercentage(i); saveInspections()">
+                <label class="form-check-label" for="si_{{i}}_{{j}}">Sí</label>
+              </div>
+            </td>
+            <td>
+              <input type="text" class="form-control form-control-sm" [(ngModel)]="item.observations"
+                (change)="saveInspections()">
+            </td>
+            <td *ngIf="j === 0" [attr.rowspan]="area.items.length + (area.isAddingNew ? 1 : 0)" class="text-center">
+              {{ area.compliancePercentage }}%
+            </td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-outline-danger" (click)="removeItem(i, j)" title="Eliminar ítem">
+                <i class="fas fa-trash"></i>
+              </button>
+              <button *ngIf="j === 0" class="btn btn-sm btn-outline-primary ms-1" (click)="addNewItem(i)"
+                title="Agregar ítem">
+                <i class="fas fa-plus"></i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="area.isAddingNew">
+            <td>
+              <input type="text" class="form-control form-control-sm" [(ngModel)]="area.newItemName"
+                placeholder="Nuevo ítem">
+            </td>
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="si_new_{{i}}" [(ngModel)]="area.newItemCompliance">
+                <label class="form-check-label" for="si_new_{{i}}">Sí</label>
+              </div>
+            </td>
+            <td>
+              <input type="text" class="form-control form-control-sm" [(ngModel)]="area.newItemObservations"
+                placeholder="Observaciones">
+            </td>
+            <td colspan="2" class="text-center">
+              <button class="btn btn-sm btn-success me-1" (click)="saveNewItem(i)"
+                [disabled]="!area.newItemName.trim()">
+                <i class="fas fa-check"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="cancelNewItem(i)">
+                <i class="fas fa-times"></i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="area.items.length === 0 && !area.isAddingNew">
+            <td colspan="5" class="text-center text-muted">No hay ítems en esta área.
+              <button class="btn btn-sm btn-outline-primary ms-2" (click)="addNewItem(i)" title="Agregar ítem">
+                <i class="fas fa-plus"></i> Agregar el primer ítem
+              </button>
+            </td>
+            <td></td>
+          </tr>
+        </ng-container>
+        <tr *ngIf="inspectionAreas.length === 0 && !showTemplateSelector">
+          <td colspan="6" class="text-center text-muted py-4">No hay áreas de inspección. Haz clic en "Agregar Área"
+            para comenzar.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-header bg-success text-white">
+    <strong>Resumen de Inspecciones</strong>
+  </div>
+  <div class="card-body table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Área</th>
+          <th>Realizadas</th>
+          <th>Pendientes</th>
+          <th>Cumplimiento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let insp of inspectionSummary">
+          <td>{{ insp.area }}</td>
+          <td class="text-success fw-bold">{{ insp.completed }}</td>
+          <td [class.text-danger]="insp.pending > 0">{{ insp.pending }}</td>
+          <td>
+            <div class="progress">
+              <div class="progress-bar bg-success" role="progressbar" [style.width]="insp.compliance + '%'"
+                [attr.aria-valuenow]="insp.compliance" aria-valuemin="0" aria-valuemax="100">
+                {{ insp.compliance }}%
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="inspectionSummary.length === 0">
+          <td colspan="4" class="text-center text-muted">No hay datos para mostrar en el resumen.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

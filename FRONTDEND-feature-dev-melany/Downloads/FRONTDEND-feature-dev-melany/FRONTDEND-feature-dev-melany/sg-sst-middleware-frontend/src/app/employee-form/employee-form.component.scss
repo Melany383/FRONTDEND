@@ -1,0 +1,165 @@
+// Variables
+@use "sass:map";   
+@use "sass:color";
+
+
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$error-color: #e74c3c;
+$border-color: #ddd;
+$shadow-color: rgba(0, 0, 0, 0.1);
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin box-shadow {
+  box-shadow: 0 2px 4px $shadow-color;
+}
+
+// Estilos generales
+.employee-form {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+
+  .form-section {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid $border-color;
+    border-radius: 5px;
+    @include box-shadow;
+
+    legend {
+      padding: 0 10px;
+      font-weight: bold;
+      color: $primary-color;
+    }
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid $border-color;
+      border-radius: 4px;
+      font-size: 14px;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+      }
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .error-message {
+      color: $error-color;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+  }
+
+  .dependientes-container {
+    margin-bottom: 15px;
+
+    .dependiente-item {
+      padding: 15px;
+      margin-bottom: 15px;
+      border: 1px dashed $border-color;
+      border-radius: 4px;
+      position: relative;
+
+      h4 {
+        margin-top: 0;
+        color: $primary-color;
+      }
+
+      .btn-remove {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: $error-color;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        padding: 3px 8px;
+        cursor: pointer;
+        font-size: 12px;
+
+        &:hover {
+          background-color: color.adjust($error-color, $lightness: -10%); // Corregido
+        }
+      }
+    }
+  }
+
+  .emergency-contact {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid $border-color;
+  }
+
+  .btn-add {
+    background-color: $secondary-color;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 15px;
+
+    &:hover {
+      background-color: color.adjust($secondary-color, $lightness: -10%); // Corregido
+    }
+  }
+
+  .form-actions {
+    @include flex-center;
+    margin-top: 25px;
+
+    .btn-submit {
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      @include box-shadow;
+
+      &:hover {
+        background-color: color.adjust($primary-color, $lightness: -10%); // Corregido
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .employee-form {
+    padding: 10px;
+
+    .form-section {
+      padding: 15px;
+    }
+  }
+}

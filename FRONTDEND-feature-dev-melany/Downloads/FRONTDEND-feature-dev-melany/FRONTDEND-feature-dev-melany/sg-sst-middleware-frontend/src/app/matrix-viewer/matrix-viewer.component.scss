@@ -1,0 +1,379 @@
+
+.matrix-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+h2 {
+  color: #0056b3;
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.8em;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: flex-start;
+}
+
+.button-group button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+.button-group button:hover {
+  background-color: #0056b3;
+}
+
+.instructions-panel {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 25px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.instructions-panel h3 {
+  color: #0056b3;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.4em;
+}
+
+.instructions-panel p, .instructions-panel ul {
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+.risk-form-panel {
+  border: 1px solid #0056b3;
+  padding: 25px;
+  margin-bottom: 30px;
+  background-color: #eaf4ff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.risk-form-panel h3 {
+  color: #0056b3;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.6em;
+  text-align: center;
+}
+
+.risk-form-panel h4 {
+  color: #333;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #a0c4ff;
+  padding-bottom: 8px;
+  font-size: 1.2em;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  gap: 20px; /* Espacio entre columnas en la misma fila */
+}
+
+.form-group {
+  flex: 1; /* Permite que los grupos de formulario crezcan y se encojan */
+  min-width: 200px; /* Para evitar que los campos se vuelvan demasiado pequeños */
+}
+
+.col-full {
+  flex-basis: 100%;
+}
+
+.col-half {
+  flex-basis: calc(50% - 10px); /* 50% menos la mitad del gap */
+}
+
+.col-quarter {
+  flex-basis: calc(25% - 15px); /* 25% menos la mitad del gap, ajustado para 4 columnas */
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+  font-size: 0.9em;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group textarea,
+.form-group select {
+  width: 100%; /* Ocupa el ancho completo de su contenedor flex-basis */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* Incluye padding y border en el tamaño total */
+  font-size: 0.9em;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.form-group.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-group input[type="checkbox"] {
+  width: auto;
+  margin-top: 0; /* Remove default top margin */
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.85em;
+  margin-top: 5px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
+  gap: 15px;
+}
+
+.form-actions button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+.form-actions button[type="submit"] {
+  background-color: #28a745;
+  color: white;
+}
+
+.form-actions button[type="submit"]:hover {
+  background-color: #218838;
+}
+
+.form-actions button[type="submit"]:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.form-actions button[type="button"] { /* Cancel button */
+  background-color: #6c757d;
+  color: white;
+}
+
+.form-actions button[type="button"]:hover {
+  background-color: #5a6268;
+}
+
+.table-responsive {
+  overflow-x: auto; /* Permite desplazamiento horizontal si la tabla es demasiado ancha */
+  margin-top: 30px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.risk-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1500px; /* Asegura que la tabla no sea demasiado estrecha */
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    vertical-align: top; /* Alinea el contenido a la parte superior */
+    font-size: 0.85em; /* Tamaño de fuente más pequeño para más contenido */
+    line-height: 1.4; /* Espaciado de línea para legibilidad */
+    white-space: normal; /* Permite que el texto se ajuste */
+  }
+
+  th {
+    background-color: #0056b3; /* Azul oscuro */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    position: sticky; /* Fija las cabeceras */
+    top: 0;
+    z-index: 1; /* Asegura que las cabeceras estén por encima del contenido al desplazarse */
+    white-space: nowrap; /* Evita que los encabezados se envuelvan */
+    padding: 12px 10px;
+  }
+
+  thead tr:first-child th {
+    border-bottom: 2px solid #003f7f; /* Línea más gruesa debajo de la primera fila de encabezados */
+  }
+
+  tbody tr {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    &:nth-child(even) {
+      background-color: #f8f8f8; /* Raya de cebra para filas pares */
+    }
+    &:hover {
+      background-color: #e6f2ff; /* Efecto hover con un azul más claro */
+    }
+    &.selected {
+      background-color: #cce0ff; /* Azul claro para fila seleccionada */
+      border: 2px solid #0056b3;
+    }
+  }
+
+  /* Colores de riesgo para las celdas de interpretación */
+  .risk-trivial {
+    background-color: #c6efce; /* Verde claro de Excel */
+    color: #006100; /* Texto verde oscuro */
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .risk-tolerable {
+    background-color: #ffeb9c; /* Amarillo claro de Excel */
+    color: #9c5700; /* Texto amarillo oscuro */
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .risk-moderado {
+    background-color: #ffc799; /* Naranja claro de Excel */
+    color: #9c4c00; /* Texto naranja oscuro */
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .risk-importante {
+    background-color: #ff7566; /* Rojo claro de Excel */
+    color: #9c0000; /* Texto rojo oscuro */
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .risk-intolerable {
+    background-color: #c00000; /* Rojo oscuro */
+    color: white; /* Texto blanco */
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
+/* Styles for Risk Summary Panel (now with a table) */
+.risk-summary-panel {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.risk-summary-panel h3 {
+  color: #0056b3;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.summary-table-container {
+  overflow-x: auto; /* Allow horizontal scrolling for summary table if needed */
+  width: 100%;
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0; /* Remove extra margin */
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center; /* Center content in summary table cells */
+    font-size: 0.9em;
+    vertical-align: middle;
+  }
+
+  th {
+    background-color: #0056b3;
+    color: white;
+    font-weight: bold;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #f8f8f8;
+  }
+
+  tbody tr:hover {
+    background-color: #e6f2ff;
+  }
+
+  /* Apply existing risk color classes to the Interpretation column cells */
+  td.risk-trivial,
+  td.risk-tolerable,
+  td.risk-moderado,
+  td.risk-importante,
+  td.risk-intolerable {
+    font-weight: bold;
+  }
+}
+
+/* Media queries para responsividad en el formulario */
+@media (max-width: 992px) {
+  .form-group.col-half,
+  .form-group.col-quarter {
+    flex-basis: calc(50% - 10px); /* En pantallas medianas, 2 columnas por fila */
+  }
+}
+
+@media (max-width: 768px) {
+  .form-group.col-half,
+  .form-group.col-quarter {
+    flex-basis: 100%; /* En pantallas pequeñas, 1 columna por fila */
+  }
+  .risk-form-panel {
+    padding: 15px;
+  }
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .form-actions button {
+    width: 100%;
+  }
+  .button-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .button-group button {
+    width: 100%;
+  }
+  /* For small screens, if summary table gets too wide, enable horizontal scroll */
+  .summary-table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+}

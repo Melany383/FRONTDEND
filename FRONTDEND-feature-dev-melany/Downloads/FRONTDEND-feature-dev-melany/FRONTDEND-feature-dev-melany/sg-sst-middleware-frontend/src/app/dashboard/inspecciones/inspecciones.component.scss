@@ -1,0 +1,28 @@
+.table th {
+  vertical-align: middle;
+}
+
+.progress {
+  height: 20px;
+}
+
+.progress-bar {
+  line-height: 20px;
+}
+
+.form-check-input:checked {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+/* Estilos adicionales para inputs dentro de la tabla */
+.table input[type="text"] {
+  height: 28px; /* Ajusta la altura de los inputs para que coincida con las filas */
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}

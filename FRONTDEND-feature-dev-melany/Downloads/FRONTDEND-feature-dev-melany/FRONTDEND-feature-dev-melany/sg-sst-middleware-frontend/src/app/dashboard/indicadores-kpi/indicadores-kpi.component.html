@@ -1,0 +1,12 @@
+<div class="kpi-container">
+    <mat-card class="kpi-card" *ngFor="let kpi of kpis" [style.border-left]="'6px solid ' + kpi.color">
+      <mat-card-content class="kpi-content">
+        <mat-icon [style.color]="kpi.color" class="kpi-icon">{{ kpi.icon }}</mat-icon>
+        <div>
+          <h3 class="value">{{ kpi.value }}</h3>
+          <p class="label">{{ kpi.title }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  

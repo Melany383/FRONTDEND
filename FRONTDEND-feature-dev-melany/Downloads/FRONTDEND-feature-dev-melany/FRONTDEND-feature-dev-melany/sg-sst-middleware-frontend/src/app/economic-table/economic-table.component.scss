@@ -1,0 +1,147 @@
+@use '../../styles.scss' as app-styles; 
+@use "sass:color"; 
+@use "sass:map";  
+
+.economic-table-container {
+  padding: 1rem;
+
+  .card {
+    border-radius: 0.75rem;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    .card-header {
+      padding: 1rem 1.5rem;
+      background: linear-gradient(90deg, map.get(app-styles.$colors, primary), color.adjust(map.get(app-styles.$colors, primary), $lightness: -20%));
+      border-bottom: none;
+      color: map.get(app-styles.$colors, white);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h3 {
+        font-size: 1.2rem;
+        margin: 0;
+      }
+
+      .selected-activity {
+        .badge {
+          font-weight: normal;
+          padding: 0.5em 1em;
+          font-size: 0.85rem;
+          display: flex;
+          align-items: center;
+          background-color: map.get(app-styles.$colors, whatsapp); 
+
+          .btn-close {
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+
+            &:hover {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+
+    .table {
+      font-size: 0.875rem;
+      margin-bottom: 0;
+      border-collapse: separate;
+      border-spacing: 0 5px;
+
+      thead th {
+        background-color: map.get(app-styles.$colors, gray-bg); 
+        border-bottom: 2px solid color.scale(map.get(app-styles.$colors, "gray-text"), $lightness: -25%); 
+        padding: 0.75rem;
+        text-align: center;
+      }
+
+      tbody {
+        tr {
+          cursor: pointer;
+          transition: background-color 0.3s ease, transform 0.1s ease;
+
+          &:hover {
+            background-color: rgba(map.get(app-styles.$colors, primary), 0.1); 
+            transform: scale(1.01);
+          }
+
+          &.table-primary {
+            background-color: rgba(map.get(app-styles.$colors, primary), 0.2); 
+          }
+
+          td {
+            vertical-align: middle;
+            padding: 0.75rem;
+            text-align: center;
+          }
+        }
+      }
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+
+      .page-item {
+        margin: 0 0.2rem;
+
+        .page-link {
+          min-width: 2rem;
+          height: 2rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 0.5rem;
+          font-size: 0.875rem;
+          color: map.get(app-styles.$colors, gray-text);  
+          transition: all 0.3s ease;
+
+          &:hover {
+            background-color: map.get(app-styles.$colors, primary); 
+            color: map.get(app-styles.$colors, white); 
+            border-color: map.get(app-styles.$colors, primary); 
+          }
+        }
+
+        &.active .page-link {
+          background-color: map.get(app-styles.$colors, primary); 
+          border-color: map.get(app-styles.$colors, primary); 
+          color: map.get(app-styles.$colors, white); 
+        }
+
+        &.disabled .page-link {
+          color: map.get(app-styles.$colors, light-gray); 
+          background-color: map.get(app-styles.$colors, light-bg); 
+        }
+      }
+    }
+  }
+
+  .input-group {
+    .form-control {
+      font-size: 0.875rem;
+      border-right: none;
+
+      &:focus {
+        box-shadow: none;
+        border-color: map.get(app-styles.$colors, primary); 
+      }
+    }
+
+    .btn {
+      font-size: 0.875rem;
+      background-color: map.get(app-styles.$colors, primary); 
+      color: map.get(app-styles.$colors, white); 
+      border-left: none;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: color.adjust(map.get(app-styles.$colors, primary), $lightness: -15%);  
+      }
+    }
+  }
+}
