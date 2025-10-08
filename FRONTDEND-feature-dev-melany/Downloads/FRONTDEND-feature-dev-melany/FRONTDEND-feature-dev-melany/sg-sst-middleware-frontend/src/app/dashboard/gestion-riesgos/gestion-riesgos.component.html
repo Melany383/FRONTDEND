@@ -1,0 +1,34 @@
+<div class="card mb-3">
+    <div class="card-header bg-danger text-white">
+      <strong>Gestión de Riesgos Identificados</strong>
+    </div>
+    <div class="card-body table-responsive">
+      <table class="table table-hover table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Riesgo</th>
+            <th>Nivel</th>
+            <th>Medidas Correctivas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let riesgo of riesgos">
+            <td>{{ riesgo.riesgo }}</td>
+            <td>
+              <span class="badge"
+                    [ngClass]="{
+                      'bg-danger': riesgo.nivel === 'Crítico',
+                      'bg-warning text-dark': riesgo.nivel === 'Alto',
+                      'bg-info': riesgo.nivel === 'Medio',
+                      'bg-secondary': riesgo.nivel === 'Bajo'
+                    }">
+                {{ riesgo.nivel }}
+              </span>
+            </td>
+            <td>{{ riesgo.medidas }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

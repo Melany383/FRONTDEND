@@ -1,0 +1,26 @@
+<div class="card mb-3">
+    <div class="card-header bg-secondary text-white">
+      <strong>Reportes Médicos Recientes</strong>
+    </div>
+    <div class="card-body table-responsive">
+      <table class="table table-striped table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Empleado</th>
+            <th>Motivo</th>
+            <th>Días de Incapacidad</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let rep of reportes">
+            <td>{{ rep.empleado }}</td>
+            <td>{{ rep.motivo }}</td>
+            <td>{{ rep.dias }}</td>
+            <td>{{ rep.fecha }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

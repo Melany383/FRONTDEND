@@ -1,0 +1,484 @@
+// =============================================
+// Variables
+// =============================================
+$color-primary: #667eea;
+$color-secondary: #271e1e;
+$color-success: #4caf50;
+$color-warning: #ff9800;
+$color-danger: #f44336;
+$color-light: #f5f5f5;
+$color-dark: #212121;
+$color-light-gray: #e0e0e0;
+$color-white: #ffffff;
+$color-transparent: rgba(0, 0, 0, 0);
+
+$border-radius: 8px;
+$box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
+
+$header-height: 60px;
+$mobile-breakpoint: 768px;
+$tablet-breakpoint: 1024px;
+
+// =============================================
+// Mixins & Functions
+// =============================================
+@use 'sass:color'; // Add this line to use color.adjust() and color.mix()
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(5px);
+  background-color: rgba($color-primary, 0.95);
+}
+
+@mixin card-style {
+  background-color: $color-white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@function tint($color, $percentage) {
+  @return color.mix(white, $color, $percentage); // Changed mix() to color.mix()
+}
+
+@function shade($color, $percentage) {
+  @return color.mix(black, $color, $percentage); // Changed mix() to color.mix()
+}
+
+// =============================================
+// Base Styles
+// =============================================
+.container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: $color-light;
+
+  @media (max-width: $mobile-breakpoint) {
+    padding: 1rem;
+  }
+}
+
+h1, h2, h3 {
+  color: $color-dark;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  line-height: 1.3;
+
+  &.section-title {
+    color: $color-primary;
+    font-weight: 500;
+    margin-top: 2rem;
+  }
+}
+
+h1 {
+  font-size: 2.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+
+  @media (max-width: $mobile-breakpoint) {
+    font-size: 1.75rem;
+  }
+}
+
+h2 {
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: $color-secondary;
+  margin-bottom: 2rem;
+
+  @media (max-width: $mobile-breakpoint) {
+    font-size: 1.5rem;
+  }
+}
+
+// =============================================
+// PHVA Menu
+// =============================================
+.phva-menu {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid $color-light-gray;
+  flex-wrap: wrap;
+
+  button {
+    margin: 0 0.5rem 1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: $border-radius;
+    font-weight: 500;
+    transition: $transition;
+    position: relative;
+
+    &.active {
+      background-color: $color-primary;
+      color: $color-white;
+      box-shadow: 0 2px 8px rgba($color-primary, 0.3);
+    }
+
+    &:hover:not(.active) {
+      background-color: rgba($color-primary, 0.1);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: $mobile-breakpoint) {
+      margin: 0.25rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// =============================================
+// Evaluation Table
+// =============================================
+.table-responsive {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  background-color: $color-white;
+  position: relative;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba($color-primary, 0.3);
+    border-radius: 4px;
+
+    &:hover {
+      background-color: rgba($color-primary, 0.5);
+    }
+  }
+}
+
+.evaluation-table {
+  width: 100%;
+  min-width: 1200px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.95rem;
+  background-color: $color-white;
+
+  th, td {
+    padding: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid $color-light-gray;
+    transition: $transition;
+
+    @media (max-width: $mobile-breakpoint) {
+      padding: 0.75rem 0.5rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  thead th {
+    @include sticky-header;
+    color: $color-white;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    // Assuming 'shade' function is defined correctly, this uses the new `color.mix` inside it.
+    border-bottom: 2px solid shade($color-primary, 10%);
+  }
+
+  // Group Header Styles
+  .group-header {
+    // Assuming 'tint' function is defined correctly, this uses the new `color.mix` inside it.
+    background-color: tint($color-primary, 70%);
+    // Assuming 'shade' function is defined correctly, this uses the new `color.mix` inside it.
+    color: shade($color-primary, 10%);
+
+    td:first-child {
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+      white-space: nowrap;
+      width: 40px;
+    }
+  }
+
+  // Standard Header Styles
+  .estandar-header {
+    // Assuming 'tint' function is defined correctly, this uses the new `color.mix` inside it.
+    background-color: tint($color-primary, 80%);
+    color: $color-secondary;
+    font-weight: 500;
+
+    td {
+      // Assuming 'tint' function is defined correctly, this uses the new `color.mix` inside it.
+      background-color: tint($color-primary, 70%);
+      text-align: left;
+      padding-left: 1.5rem;
+      // Assuming 'shade' function is defined correctly, this uses the new `color.mix` inside it.
+      border-bottom: 1px solid shade($color-primary, 5%);
+    }
+  }
+
+  // Alternate Rows
+  tr:nth-child(even):not(.group-header):not(.estandar-header) {
+    background-color: $color-light;
+  }
+
+  // Hover Effect
+  tr:hover:not(.group-header):not(.estandar-header) {
+    background-color: color.adjust($color-light, $lightness: -3%); // Changed darken() to color.adjust()
+    td {
+      transform: scale(1.01);
+    }
+  }
+
+  // Form Controls
+  input[type="number"], input[type="text"] {
+    width: 100%;
+    max-width: 120px;
+    padding: 0.5rem;
+    border: 1px solid $color-light-gray;
+    border-radius: $border-radius;
+    transition: $transition;
+
+    &:focus {
+      border-color: $color-primary;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+    }
+
+    @media (max-width: $mobile-breakpoint) {
+      max-width: 80px;
+      padding: 0.4rem;
+    }
+  }
+
+  mat-checkbox {
+    @include flex-center;
+
+    .mat-checkbox-frame {
+      border-color: $color-light-gray;
+      transition: $transition;
+    }
+
+    &:hover .mat-checkbox-frame {
+      border-color: $color-primary;
+    }
+  }
+
+  // Rating Column Styles
+  .rating-cell {
+    font-weight: 600;
+    // Assuming 'tint' function is defined correctly, this uses the new `color.mix` inside it.
+    background-color: tint($color-primary, 90%);
+
+    &.excellent {
+      color: $color-success;
+    }
+
+    &.good {
+      color: $color-primary;
+    }
+
+    &.warning {
+      color: $color-warning;
+    }
+
+    &.danger {
+      color: $color-danger;
+    }
+  }
+}
+
+// =============================================
+// Progress Summary
+// =============================================
+.progress-summary {
+  @include card-style;
+  position: relative;
+  overflow: hidden;
+
+  .summary-values {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+
+    p {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: $color-dark;
+    }
+  }
+
+  mat-progress-bar {
+    height: 10px;
+    border-radius: 5px;
+
+    // Assuming 'tint' function is defined correctly, this uses the new `color.mix` inside it.
+    .mat-progress-bar-buffer {
+      background-color: tint($color-primary, 70%);
+    }
+
+    .mat-progress-bar-fill::after {
+      background: linear-gradient(90deg, $color-primary, $color-success);
+      border-radius: 5px;
+    }
+  }
+}
+
+// =============================================
+// Actions
+// =============================================
+.actions {
+  text-align: center;
+  margin-top: 2rem;
+
+  button {
+    min-width: 220px;
+    height: 48px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: $transition;
+    position: relative;
+
+    &:disabled {
+      opacity: 0.7;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+// =============================================
+// Utility Classes
+// =============================================
+.red-background {
+  background-color: rgba($color-danger, 0.15) !important;
+  border: 1px solid rgba($color-danger, 0.3) !important;
+}
+
+.text-success {
+  color: $color-success;
+}
+
+.text-warning {
+  color: $color-warning;
+}
+
+.text-danger {
+  color: $color-danger;
+}
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.phva-menu {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  button {
+      margin: 0 5px;
+
+      &.active {
+          background-color: #3f51b5;
+          color: white;
+      }
+  }
+}
+
+.progress-summary {
+  margin: 20px 0;
+
+  .summary-values {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+  }
+}
+
+.table-responsive {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.evaluation-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-align: left;
+  }
+
+  th {
+      background-color: #3f51b5;
+      color: white;
+      font-weight: bold;
+  }
+
+  .group-header {
+      background-color: #e3f2fd;
+
+      td {
+          font-weight: bold;
+          text-align: center;
+      }
+  }
+
+  .estandar-header {
+      background-color: #bbdefb;
+
+      td {
+          font-weight: bold;
+      }
+  }
+
+  input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+
+  button {
+      min-width: 150px;
+  }
+}
+
+/* Estilos para los colores de cumplimiento */
+.cell-yellow {
+  background-color: #fff9c4 !important;
+}
+
+.cell-red {
+  background-color: #ffebee !important;
+}

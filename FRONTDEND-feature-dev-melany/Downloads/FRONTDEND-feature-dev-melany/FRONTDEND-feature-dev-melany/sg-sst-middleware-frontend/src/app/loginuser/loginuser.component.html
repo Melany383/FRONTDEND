@@ -1,0 +1,163 @@
+<div class="container-fluid p-0">
+  <section class="login-section py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow-sm border-0 p-4 login-card">
+
+            <div *ngIf="!showRecoverPassword && !showOTPInput && !showResetPassword">
+              <div class="text-center mb-4">
+                <h2 class="fw-bold mt-3">Iniciar Sesión</h2>
+                <p class="text-muted">Accede a tu cuenta Oppy</p>
+              </div>
+
+              <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <mat-form-field appearance="outline" class="w-100 mb-3">
+                <mat-label>Correo electrónico</mat-label>
+                <input matInput type="email" formControlName="email">
+                <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+                  El correo es obligatorio.
+                </mat-error>
+              
+                <mat-error *ngIf="loginForm.get('email')?.hasError('noSpaces')">
+                  El correo no puede contener espacios.
+                </mat-error>
+                <mat-error *ngIf="loginForm.get('email')?.hasError('missingDomain')">
+                  El correo debe contener un dominio (por ejemplo, @gmail.com).
+                </mat-error>
+              </mat-form-field>
+
+
+                <mat-form-field appearance="outline" class="w-100 mb-3">
+                  <mat-label>Contraseña</mat-label>
+                  <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required>
+                  <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+                    <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                  </button>
+                  <mat-error *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+                    La contraseña es obligatoria.
+                  </mat-error>
+                  <mat-error *ngIf="loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched">
+                    Debe tener al menos 6 caracteres.
+                  </mat-error>
+                  <mat-error *ngIf="loginForm.get('password')?.hasError('maxlength') && loginForm.get('password')?.touched">
+                    No puede tener más de 12 caracteres.
+                  </mat-error>
+                </mat-form-field>
+
+                <button type="submit" class="btn btn-primary w-100 py-2 mb-3" [disabled]="loginForm.invalid">
+                  Ingresar
+                </button>
+              </form>
+
+              <div class="text-center mt-4">
+                <a (click)="goToRecover()" class="text-primary" style="cursor:pointer">
+                  ¿Olvidaste tu contraseña?
+                </a>
+              </div>
+            </div>
+
+            <div *ngIf="showRecoverPassword && !showOTPInput && !showResetPassword">
+              <h5 class="text-center mb-3">Recuperar contraseña</h5>
+              <form [formGroup]="recoverForm" (ngSubmit)="sendRecoverEmail()">
+                <mat-form-field appearance="outline" class="w-100 mb-3">
+                <mat-label>Correo asociado</mat-label>
+                <input matInput type="email" formControlName="email">
+                <mat-error *ngIf="recoverForm.get('email')?.hasError('required')">
+                  El correo es obligatorio.
+                </mat-error>
+                
+                <mat-error *ngIf="recoverForm.get('email')?.hasError('noSpaces')">
+                  El correo no puede contener espacios.
+                </mat-error>
+                <mat-error *ngIf="recoverForm.get('email')?.hasError('missingDomain')">
+                  El correo debe contener un dominio (por ejemplo, @gmail.com).
+                </mat-error>
+              </mat-form-field>
+
+
+                <button type="submit" class="btn btn-primary w-100 py-2 mb-2" [disabled]="recoverForm.invalid">
+                  Enviar código
+                </button>
+                <button type="button" class="btn btn-secondary w-100 py-2" (click)="cancelRecover()">
+                  Cancelar
+                </button>
+              </form>
+            </div>
+
+            <div *ngIf="showOTPInput && !showResetPassword">
+              <h5 class="text-center mb-3">Verifica tu código</h5>
+              <p class="text-muted text-center">Ingresa el código de 6 dígitos enviado a tu correo</p>
+
+              <p class="text-success text-center small">
+                <strong>Código demo:</strong> {{ generatedOTP }}
+              </p>
+
+              <div class="text-center mb-3">
+                <input
+                  type="text"
+                  maxlength="6"
+                  [(ngModel)]="otpCode"
+                  placeholder="Ingresa el código"
+                  class="form-control text-center w-75 mx-auto"
+                  (input)="otpError = null"
+                />
+              </div>
+
+              <p *ngIf="otpError" class="text-danger text-center small">{{ otpError }}</p>
+
+              <div class="text-center mb-2">
+                <p *ngIf="!otpExpired" class="text-muted">
+                  El código expira en {{ otpCountdown }} segundos
+                </p>
+                <p *ngIf="otpExpired" class="text-danger">
+                  El código ha caducado. Solicita uno nuevo.
+                </p>
+              </div>
+
+              <button class="btn btn-primary w-100 py-2 mb-2" [disabled]="otpCode.length !== 6" (click)="verifyOTP()">
+                Continuar
+              </button>
+              <button class="btn btn-secondary w-100 py-2 mb-2" (click)="requestNewOTP()">Nuevo código</button>
+              <button class="btn btn-outline-danger w-100 py-2" (click)="cancelOTP()">Cancelar</button>
+            </div>
+
+            <div *ngIf="showResetPassword">
+              <h5 class="text-center mb-3">Restablecer contraseña</h5>
+              <form [formGroup]="resetPasswordForm" (ngSubmit)="submitNewPassword()">
+                <mat-form-field appearance="outline" class="w-100 mb-3">
+                  <mat-label>Nueva contraseña</mat-label>
+                  <input matInput type="password" formControlName="newPassword" (input)="updatePasswordsMatch()">
+                  <mat-error *ngIf="resetPasswordForm.get('newPassword')?.hasError('required')">
+                    La contraseña es obligatoria.
+                  </mat-error>
+                  <mat-error *ngIf="resetPasswordForm.get('newPassword')?.hasError('minlength')">
+                    Debe tener al menos 6 caracteres.
+                  </mat-error>
+                  <mat-error *ngIf="resetPasswordForm.get('newPassword')?.hasError('maxlength')">
+                    No puede tener más de 12 caracteres.
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100 mb-3">
+                  <mat-label>Confirmar contraseña</mat-label>
+                  <input matInput type="password" formControlName="confirmPassword" (input)="updatePasswordsMatch()">
+                </mat-form-field>
+
+                <p *ngIf="!passwordsMatch" class="text-danger text-center">
+                  Las contraseñas no coinciden.
+                </p>
+
+                <button type="submit" class="btn btn-primary w-100 py-2"
+                  [disabled]="resetPasswordForm.invalid || !passwordsMatch">
+                  Continuar
+                </button>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

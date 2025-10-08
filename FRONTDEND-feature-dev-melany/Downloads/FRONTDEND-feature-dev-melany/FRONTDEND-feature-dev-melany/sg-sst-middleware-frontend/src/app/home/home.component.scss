@@ -1,0 +1,773 @@
+// Colors
+@use '../../styles.scss' as app-styles; 
+// =============================================
+// VARIABLES & MIXINS
+// =============================================
+@use "sass:map";
+@use "sass:color";
+
+
+// Spacing
+$spacing: (
+  base: 1rem,
+  sm: 0.5rem,
+  md: 1.5rem,
+  lg: 2rem,
+  xl: 3rem,
+  xxl: 6rem
+);
+
+// Breakpoints
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+// Mixins
+@mixin card-effect($y: -5px, $shadow: 0 10px 25px rgba(0,0,0,0.1)) {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY($y);
+    box-shadow: $shadow;
+  }
+}
+
+@mixin responsive($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) { // Corrected map.has-key()
+    @media (max-width: map.get($breakpoints, $breakpoint)) { // Corrected map.get()
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint `#{$breakpoint}` no existe en el mapa $breakpoints";
+  }
+}
+
+@mixin scroll-transition {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// =============================================
+// BASE STYLES
+// =============================================
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: map.get(app-styles.$colors, text); 
+  line-height: 1.6;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 map.get($spacing, md); // Corrected map.get()
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+  padding-left: map.get($spacing, md); // Corrected map.get()
+  padding-right: map.get($spacing, md); // Corrected map.get()
+  margin: 0 auto;
+
+  @include responsive(lg) {
+    max-width: 992px;
+  }
+
+  @include responsive(md) {
+    max-width: 768px;
+  }
+
+  @include responsive(sm) {
+    max-width: 576px;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  margin-bottom: map.get($spacing, md); // Corrected map.get()
+}
+
+p {
+  margin-bottom: map.get($spacing, base); // Corrected map.get()
+}
+
+// =============================================
+// UTILITY CLASSES
+// =============================================
+.furore {
+  font-family: 'furore', sans-serif;
+  font-weight: bold;
+  color: hsl(0, 4%, 78%);
+  flex-grow: 1;
+
+  // Estilo de texto con gradiente
+  &.text-gradient {
+    background: linear-gradient(45deg, #0000ef, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: thin;
+  }
+
+  // Responsivo para móviles
+  @media (max-width: 768px) {
+    font-size: 4rem;
+    margin: 1rem 0;
+  }
+}
+
+.bg-primary { background-color: map.get(app-styles.$colors, primary) !important; } 
+.bg-secondary { background-color: map.get(app-styles.$colors, secondary) !important; } 
+.bg-light { background-color: map.get(app-styles.$colors, light-bg) !important; } 
+.text-white { color: map.get(app-styles.$colors, white) !important; } 
+.text-primary { color: map.get(app-styles.$colors, primary) !important; } 
+.text-muted { color: map.get(app-styles.$colors, gray-text) !important; } 
+
+.rounded { border-radius: 10px !important; }
+.rounded-full { border-radius: 50% !important; }
+.shadow { box-shadow: 0 4px 6px rgba(0,0,0,0.05) !important; }
+.shadow-lg { box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important; }
+
+.position-relative { position: relative !important; }
+.position-absolute { position: absolute !important; }
+
+// =============================================
+// COMPONENTS
+// =============================================
+
+// Badges
+.badge {
+  &-soft-primary {
+    background-color: rgba(map.get(app-styles.$colors, primary), 0.1); 
+    color: map.get(app-styles.$colors, primary); 
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    display: inline-block;
+    margin-bottom: map.get($spacing, md); // Corrected map.get()
+  }
+}
+
+// Buttons
+.btn {
+  margin: map.get($spacing, base) map.get($spacing, sm); // Corrected map.get()
+  padding: map.get($spacing, sm) map.get($spacing, md); // Corrected map.get()
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &-light {
+    background: map.get(app-styles.$colors, white); 
+    color: map.get(app-styles.$colors, primary); 
+    border: 2px solid map.get(app-styles.$colors, white); 
+
+    &:hover {
+      background: transparent;
+      color: map.get(app-styles.$colors, white); 
+    }
+  }
+
+  &-outline-light {
+    border-color: map.get(app-styles.$colors, white); 
+    color: map.get(app-styles.$colors, white); 
+
+    &:hover {
+      background: map.get(app-styles.$colors, white); 
+      color: map.get(app-styles.$colors, primary); 
+    }
+  }
+
+  &-lg {
+    padding: map.get($spacing, md) map.get($spacing, lg); // Corrected map.get()
+    font-size: 1.1rem;
+  }
+}
+
+// Icon Wrapper
+.icon-wrapper {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto map.get($spacing, lg) auto; // Corrected map.get()
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(map.get(app-styles.$colors, primary), 0.1); 
+  color: map.get(app-styles.$colors, primary); 
+  font-size: 1.8rem;
+  transition: all 0.3s ease;
+}
+
+// Animations
+.animate__animated {
+  animation-duration: 0.6s;
+  animation-fill-mode: both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none !important;
+  }
+}
+
+// =============================================
+// LAYOUT SECTIONS
+// =============================================
+.hero-section {
+  background: linear-gradient(135deg, 
+    color.adjust(map.get(app-styles.$colors, primary), $lightness: 0%) 0%, 
+    color.adjust(map.get(app-styles.$colors, secondary), $lightness: 0%) 100%); 
+  padding: 100px 0;
+  position: relative;
+  text-align: left;
+  overflow: hidden;
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .shadow-hover {
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+  }
+
+  .hero-image{
+    background-color: map.get(app-styles.$colors, white); 
+  }
+
+  h1 {
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+p.lead {
+  color: map.get(app-styles.$colors, light-gray); 
+  font-weight: 300;
+}
+
+}
+
+.features-section {
+  background: #f8f9fa;
+  padding: 80px 0;
+
+  .feature-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    height: 100%;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .icon-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #0d6efd; // This is a hardcoded hex, consider moving to styles.scss if it's a theme color
+      color: white;
+      margin-bottom: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover .icon-wrapper {
+      transform: rotate(10deg);
+      background: #ff5733; // This is a hardcoded hex, consider moving to styles.scss if it's a theme color
+    }
+  }
+}
+// PHVA Section
+// PHVA Horizontal Section
+.phva-horizontal-section {
+  background: map.get(app-styles.$colors, white); 
+  padding: map.get($spacing, xxl) 0; // Corrected map.get()
+
+  .phva-horizontal-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: map.get($spacing, xl) 0; // Corrected map.get()
+  }
+
+  .phva-steps-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: map.get($spacing, md); // Corrected map.get()
+    margin: 0 -15px;
+  }
+
+  .phva-step {
+    flex: 1;
+    min-width: 250px;
+    max-width: 300px;
+    padding: 0 map.get($spacing, sm); // Corrected map.get()
+
+    @include responsive(md) {
+      min-width: 45%;
+    }
+
+    @include responsive(sm) {
+      min-width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  .step-card {
+    height: 100%;
+    padding: map.get($spacing, lg); // Corrected map.get()
+    background: map.get(app-styles.$colors, white); 
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    h4 {
+      margin: map.get($spacing, md) 0; // Corrected map.get()
+    }
+
+    .step-description {
+      margin-bottom: map.get($spacing, md); // Corrected map.get()
+      flex-grow: 1;
+    }
+
+    .step-icon {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      border-radius: 50%;
+      color: white;
+      margin-bottom: map.get($spacing, md); // Corrected map.get()
+    }
+
+    .step-items {
+      text-align: left;
+      padding-left: 20px;
+      margin-bottom: 0;
+      width: 100%;
+
+      li {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: map.get(app-styles.$colors, gray-text); 
+        margin-bottom: map.get($spacing, sm); // Corrected map.get()
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+/* Sección de testimonios */
+.testimonials-section {
+  background: #f8f9fa; // Hardcoded, consider moving to styles.scss if it's a global background
+  padding: 80px 0;
+}
+
+/* Tarjeta de testimonio */
+.testimonial-card {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 30px;
+  background: #ffffff; // Hardcoded, consider moving to styles.scss if it's a global background
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: opacity 0.8s ease-in-out;
+}
+
+/* Corrección en la animación del carrusel */
+.carousel-item {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.carousel-item.active {
+  display: block;
+  opacity: 1;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Asegurar que los elementos se alineen correctamente */
+.carousel-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilos de los botones de navegación */
+.carousel-control-prev, .carousel-control-next {
+  width: 45px;
+  height: 45px;
+  background: rgba(0, 123, 255, 0.2); // Hardcoded, consider moving to styles.scss if it's a theme color
+  border-radius: 50%;
+  opacity: 1;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-control-prev:hover, .carousel-control-next:hover {
+  background: rgba(0, 123, 255, 0.6); // Hardcoded, consider moving to styles.scss if it's a theme color
+  transform: scale(1.1);
+}
+
+/* Iconos de navegación más visibles */
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  filter: invert(1);
+  width: 20px;
+  height: 20px;
+}
+
+/* Indicadores del carrusel (Opcional: si decides usarlos) */
+.carousel-indicators {
+  bottom: -30px;
+}
+
+.carousel-indicators button {
+  background-color: #007bff; // Hardcoded, consider moving to styles.scss if it's a theme color
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  margin: 5px;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.carousel-indicators .active {
+  opacity: 1;
+}
+
+// CTA Section
+.cta-section {
+  background: linear-gradient(135deg,
+    color.adjust(map.get(app-styles.$colors, primary), $lightness: 0%) 0%, 
+    color.adjust(map.get(app-styles.$colors, secondary), $lightness: 0%) 100%); 
+  padding: map.get($spacing, xxl) 0; // Corrected map.get()
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  .cta-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: map.get(app-styles.$colors, white); 
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 50px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 2.8rem;
+    margin-bottom: map.get($spacing, lg); // Corrected map.get()
+    font-weight: 700;
+
+    @include responsive(md) {
+      font-size: 2.2rem;
+    }
+  }
+
+  p {
+    font-size: 1.3rem;
+    max-width: 700px;
+    margin: auto;
+    opacity: 0.9;
+  }
+
+  .btn {
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: map.get($spacing, md) map.get($spacing, xl); // Corrected map.get()
+    transition: all 0.3s ease-in-out;
+
+    &.btn-primary {
+      background-color: color.adjust(map.get(app-styles.$colors, primary), $lightness: 5%); 
+      border: none;
+      &:hover {
+        background-color: color.adjust(map.get(app-styles.$colors, primary), $lightness: 10%); 
+        transform: translateY(-2px);
+      }
+    }
+
+    &.btn-outline-light {
+      border-color: rgba(255, 255, 255, 0.6);
+      color: white;
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+    }
+
+    @include responsive(sm) {
+      width: 100%;
+      margin-bottom: map.get($spacing, sm); // Corrected map.get()
+    }
+  }
+}
+
+// WhatsApp Float
+.whatsapp-float {
+  position: fixed;
+  bottom: map.get($spacing, md); // Corrected map.get()
+  right: map.get($spacing, md); // Corrected map.get()
+  width: 60px;
+  height: 60px;
+  background: map.get(app-styles.$colors, whatsapp); 
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: map.get(app-styles.$colors, whatsapp-hover); 
+    transform: scale(1.1);
+  }
+
+  @include responsive(md) {
+    right: map.get($spacing, sm); // Corrected map.get()
+    bottom: map.get($spacing, sm); // Corrected map.get()
+    width: 50px;
+    height: 50px;
+  }
+}
+
+// =============================================
+// RESPONSIVE ADJUSTMENTS
+// =============================================
+@include responsive(lg) {
+  .hero-section,
+  .features-section,
+  .phva-section,
+  .testimonials-section,
+  .cta-section {
+    padding: map.get($spacing, xl) 0; // Corrected map.get()
+  }
+
+  .feature-card {
+    padding: map.get($spacing, lg); // Corrected map.get()
+  }
+}
+
+@include responsive(md) {
+  .hero-section {
+    text-align: center;
+
+    .btn {
+      display: block;
+      width: 100%;
+      margin-bottom: map.get($spacing, sm); // Corrected map.get()
+    }
+  }
+
+  .testimonial-card {
+    padding: map.get($spacing, lg); // Corrected map.get()
+  }
+}
+
+@include responsive(sm) {
+  .hero-section {
+    h1 {
+      font-size: 2.2rem;
+    }
+
+    .lead {
+      font-size: 1.1rem;
+    }
+  }
+
+  
+   
+}
+
+
+// MASCOTA ESTILOS
+.mascot-face {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+        }
+        
+        .eye {
+            width: 25px;
+            height: 25px;
+            background: white;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 10px;
+            position: relative;
+            animation: blink 3s infinite;
+        }
+        
+        .eye::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: #2c3e50;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: look 4s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 90%, 100% { height: 25px; }
+            95% { height: 3px; }
+        }
+        
+        @keyframes look {
+            0%, 100% { transform: translate(-50%, -50%); }
+            25% { transform: translate(-30%, -50%); }
+            75% { transform: translate(-70%, -50%); }
+        }
+        
+        .smile {
+            width: 60px;
+            height: 30px;
+            border: 4px solid white;
+            border-top: none;
+            border-radius: 0 0 60px 60px;
+            margin: 15px auto 0;
+        }
+
+
+
+
+.mascot-body-v1 {
+            width: 200px;
+            height: 200px;
+                background: linear-gradient(135deg, #3755db, #5f2699);
+
+            border-radius: 50%;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+.helmet-v1 {
+            width: 220px;
+            height: 110px;
+            background: #f39c12;
+            border-radius: 110px 110px 0 0;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+
+.helmet-symbol {
+            font-size: 30px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: glow 2s infinite alternate;
+        }       
+
+
+.arms {
+            position: absolute;
+            top: 120px;
+            width: 100%;
+            z-index: 1;
+        }
+        
+        .arm {
+            width: 40px;
+            height: 80px;
+                background: linear-gradient(135deg, #3755db, #5f2699);
+
+            border-radius: 20px;
+            position: absolute;
+            animation: wave 2s infinite;
+        }
+        
+        .arm.left {
+            left: -30px;
+            transform-origin: top center;
+        }
+        
+        .arm.right {
+            right: -30px;
+            transform-origin: top center;
+            animation-delay: 1s;
+        }
+        
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(20deg); }
+        }

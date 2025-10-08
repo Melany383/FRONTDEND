@@ -1,0 +1,33 @@
+.kpi-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+  
+  .kpi-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .kpi-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .kpi-icon {
+    font-size: auto;
+  }
+  
+  .value {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  
+  .label {
+    margin: 0;
+    color: #666;
+  }
+  

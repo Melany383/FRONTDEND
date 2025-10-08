@@ -1,0 +1,108 @@
+<header class="header" role="banner">
+  <!-- Logo Section 
+  <div class="header__logo-container">
+    <img
+      src="/opptech-logo.png"
+      alt="Logo de OppTech"
+      class="header__logo"
+      (click)="openHome()"
+      role="button"
+      tabindex="0"
+      aria-label="Ir a la página de inicio"
+    />
+  </div>-->
+  
+  <!-- Actions Section -->
+  <nav class="header__actions" role="navigation" aria-label="Navegación principal">
+    <!-- Logged In User Section -->
+    <div *ngIf="isLoggedIn$ | async; else notLoggedIn" class="header__user-section">
+      <!-- Company Registration Buttons (when user has no company) -->
+      <ng-container *ngIf="!(userHasCompany$ | async)">
+        <button
+          mat-stroked-button
+          class="header__button header__button--secondary"
+          (click)="navigateTo('/crear-empresa')"
+          aria-label="Registrar nueva empresa"
+        >
+          <mat-icon aria-hidden="true">business</mat-icon>
+          <span>Registrar Empresa</span>
+        </button>
+        
+        <button
+          mat-stroked-button
+          class="header__button header__button--secondary"
+          (click)="navigateTo('/unirse-a-empresa')"
+          aria-label="Unirse a empresa existente"
+        >
+          <mat-icon aria-hidden="true">group_add</mat-icon>
+          <span>Unirse a Empresa</span>
+        </button>
+      </ng-container>
+      
+      <!-- User Profile Button -->
+      <button
+        mat-button
+        [matMenuTriggerFor]="userMenu"
+        class="header__user-button"
+        aria-label="Abrir menú de perfil de usuario"
+        aria-expanded="false"
+        aria-haspopup="true"
+      >
+        <span class="header__welcome-text">
+          Bienvenido, <strong>{{ userFullName }}</strong>
+        </span>
+        <mat-icon class="header__user-icon" aria-hidden="true">account_circle</mat-icon>
+        <mat-icon class="header__dropdown-icon" aria-hidden="true">arrow_drop_down</mat-icon>
+      </button>
+
+      <!-- User Profile Menu -->
+      <mat-menu #userMenu="matMenu" class="user-profile-menu" xPosition="before">
+        <div class="user-profile-menu__header">
+          <mat-icon class="user-profile-menu__avatar" aria-hidden="true">account_circle</mat-icon>
+          <div class="user-profile-menu__info">
+            <span class="user-profile-menu__name">{{ userFullName }}</span>
+            <span class="user-profile-menu__email">{{ (currentUser$ | async)?.email }}</span>
+            <span class="user-profile-menu__company" *ngIf="userCompany$ | async as company">
+              {{ company.company_name }}
+            </span>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <button 
+          mat-menu-item 
+          (click)="logout()" 
+          aria-label="Cerrar sesión"
+          class="user-profile-menu__logout-button"
+        >
+          <mat-icon aria-hidden="true">logout</mat-icon>
+          <span>Cerrar sesión</span>
+        </button>
+      </mat-menu>
+    </div>
+
+    <!-- Not Logged In Section -->
+    <ng-template #notLoggedIn>
+      <div class="header__auth-buttons">
+        <button
+          mat-stroked-button
+          class="header__button header__button--secondary"
+          (click)="openRegisterForm()"
+          aria-label="Registrarse en la plataforma"
+        >
+          <mat-icon aria-hidden="true">person_add</mat-icon>
+          <span>Registro</span>
+        </button>
+        
+        <button
+          mat-flat-button
+          class="header__button header__button--primary"
+          (click)="openLoginForm()"
+          aria-label="Iniciar sesión en la plataforma"
+        >
+          <mat-icon aria-hidden="true">login</mat-icon>
+          <span>Iniciar sesión</span>
+        </button>
+      </div>
+    </ng-template>
+  </nav>
+</header>

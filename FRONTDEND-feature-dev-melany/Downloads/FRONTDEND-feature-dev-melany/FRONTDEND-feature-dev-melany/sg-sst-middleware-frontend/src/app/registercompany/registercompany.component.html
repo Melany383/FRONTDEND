@@ -1,0 +1,298 @@
+<div class="container-fluid p-0">
+  <section class="login-section py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+          <div class="card shadow-sm border-0 p-4 login-card">
+            <div class="text-center mb-4">
+              <h2 class="fw-bold mt-3">Registro de Empresa</h2>
+              <p class="text-muted">Complete la información requerida</p>
+            </div>
+            
+            <div *ngIf="userHasCompany" class="alert alert-info text-center" role="alert">
+              Ya tienes una empresa registrada. No puedes registrar otra.
+            </div>
+
+            <form [formGroup]="registerCompany" (ngSubmit)="onSubmit()">
+              <section class="mb-5">
+                <div class="d-flex align-items-center mb-3">
+                  <mat-icon class="me-2">business</mat-icon>
+                  <h3 class="mb-0">Información General</h3>
+                </div>
+                
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Nombre de la empresa</mat-label>
+                      <input matInput formControlName="company" required>
+                      <mat-icon matSuffix>business</mat-icon>
+                      <mat-error *ngIf="registerCompany.get('company')?.hasError('required')">
+                        Nombre es requerido
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>NIT</mat-label>
+                      <input matInput formControlName="nit" required>
+                      <mat-icon matSuffix>fingerprint</mat-icon>
+                      <mat-error *ngIf="registerCompany.get('nit')?.hasError('required')">
+                        NIT es requerido
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Dígito de verificación</mat-label>
+                      <input matInput formControlName="verificationDigit" type="number" required>
+                      <mat-icon matSuffix>verified</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Tipo de persona</mat-label>
+                      <mat-select formControlName="personType" required>
+                        <mat-option *ngFor="let type of personTypes" [value]="type.id">{{type.name}}</mat-option>
+                      </mat-select>
+                      <mat-icon matSuffix>person</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Régimen tributario</mat-label>
+                      <mat-select formControlName="taxRegime" required>
+                        <mat-option *ngFor="let regime of taxRegimes" [value]="regime.id">{{regime.name}}</mat-option>
+                      </mat-select>
+                      <mat-icon matSuffix>receipt</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Número de trabajadores</mat-label>
+                      <input matInput formControlName="numberOfWorkers" type="number" min="1" required>
+                      <mat-icon matSuffix>groups</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-12">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>ARL</mat-label>
+                      <mat-select formControlName="arl" required>
+                        <mat-option *ngFor="let arl of arlList" [value]="arl.id">{{arl.name}}</mat-option>
+                      </mat-select>
+                      <mat-icon matSuffix>health_and_safety</mat-icon>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </section>
+
+              <section class="mb-5">
+                <div class="d-flex align-items-center mb-3">
+                  <mat-icon class="me-2">badge</mat-icon>
+                  <h3 class="mb-0">Representante Legal</h3>
+                </div>
+                
+                <div class="row g-3">
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Tipo de identificación</mat-label>
+                      <mat-select formControlName="representativeIdType" required>
+                        <mat-option *ngFor="let idType of idTypes" [value]="idType.id">{{idType.name}}</mat-option>
+                      </mat-select>
+                      <mat-icon matSuffix>credit_card</mat-icon>
+                    </mat-form-field>
+                  </div>
+                  
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Número de documento</mat-label>
+                      <input matInput formControlName="representativeId" required>
+                      <mat-icon matSuffix>numbers</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Primer Nombre</mat-label>
+                      <input matInput formControlName="firstName" required>
+                      <mat-icon matSuffix>person</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Segundo Nombre</mat-label>
+                      <input matInput formControlName="middleName">
+                      <mat-icon matSuffix>person</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Primer Apellido</mat-label>
+                      <input matInput formControlName="firstLastName" required>
+                      <mat-icon matSuffix>person</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Segundo Apellido</mat-label>
+                      <input matInput formControlName="secondLastName">
+                      <mat-icon matSuffix>person</mat-icon>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </section>
+
+              <section class="mb-5">
+                <div class="d-flex align-items-center mb-3">
+                  <mat-icon class="me-2">location_on</mat-icon>
+                  <h3 class="mb-0">Sede Principal</h3>
+                </div>
+                
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Nombre de la sede</mat-label>
+                      <input matInput formControlName="headquartersName" required>
+                      <mat-icon matSuffix>home_work</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-6">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Dirección</mat-label>
+                      <input matInput formControlName="address" required>
+                      <mat-icon matSuffix>location_on</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Indicativo + Teléfono fijo</mat-label>
+                      <input matInput formControlName="phone" type="tel">
+                      <mat-icon matSuffix>call</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Celular</mat-label>
+                      <input matInput formControlName="mobile" type="tel" required>
+                      <mat-icon matSuffix>smartphone</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Departamento</mat-label>
+                      <input matInput formControlName="department" required>
+                      <mat-icon matSuffix>map</mat-icon>
+                      <mat-error *ngIf="registerCompany.get('department')?.hasError('required')">
+                        Departamento es requerido
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Municipio</mat-label>
+                      <input matInput formControlName="municipality" required>
+                      <mat-icon matSuffix>location_city</mat-icon>
+                      <mat-error *ngIf="registerCompany.get('municipality')?.hasError('required')">
+                        Municipio es requerido
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Correo Electrónico</mat-label>
+                      <input matInput formControlName="email" type="email" required>
+                      <mat-icon matSuffix>email</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Confirmar Correo Electrónico</mat-label>
+                      <input matInput formControlName="confirmEmail" type="email" required>
+                      <mat-icon matSuffix>mark_email_read</mat-icon>
+                      <mat-error *ngIf="registerCompany.get('confirmEmail')?.hasError('mismatch')">
+                        Los correos no coinciden
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </section>
+
+              <section class="mb-5">
+                <div class="d-flex align-items-center mb-3">
+                  <mat-icon class="me-2">trending_up</mat-icon>
+                  <h3 class="mb-0">Actividad Económica</h3>
+                </div>
+                
+                <div class="d-flex flex-column">
+                  <button type="button" mat-raised-button color="primary" class="w-auto mb-3" (click)="openEconomicTable()" [disabled]="userHasCompany">
+                    <mat-icon>search</mat-icon>
+                    Buscar Actividad Económica
+                  </button>
+                  
+                  <div *ngIf="selectedActivity" class="selected-activity-container">
+                    <mat-chip-set aria-label="Actividad seleccionada">
+                      <mat-chip selected (removed)="removeActivity()" class="custom-chip">
+                        <div class="chip-content-wrapper">
+                          <div class="chip-line">{{selectedActivity.codigo_ciiu}}</div>
+                          <div class="chip-line">{{selectedActivity.descripcion}}</div>
+                          <div class="chip-line">(Riesgo: {{selectedActivity.tipo_riesgo}})</div>
+                        </div>
+                      </mat-chip>
+                    </mat-chip-set>
+                  </div>
+                  
+                </div>
+              </section>
+
+              <div class="text-center mt-4">
+                <button mat-raised-button color="primary" type="submit" [disabled]="registerCompany.invalid || userHasCompany" class="w-100 py-2">
+                  <mat-icon>save</mat-icon>
+                  Registrar Empresa
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="modal fade" [ngClass]="{'show': showEconomicTable}" [style.display]="showEconomicTable ? 'block' : 'none'">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <header class="modal-header bg-primary text-white">
+        <h2 class="modal-title">Seleccionar Actividad Económica</h2>
+        <button type="button" class="btn-close btn-close-white" (click)="closeEconomicTable()" aria-label="Cerrar modal"></button>
+      </header>
+      
+      <div class="modal-body">
+        <app-economic-table (activitySelected)="onActivitySelected($event)"></app-economic-table>
+      </div>
+      
+      <footer class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeEconomicTable()">
+          <mat-icon>close</mat-icon>
+          Cerrar
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showEconomicTable" class="modal-backdrop fade show"></div>

@@ -1,0 +1,33 @@
+<div class="container-fluid p-0">
+    <section class="login-section py-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm border-0 p-4 login-card">
+              <div class="text-center mb-4">
+                <h2 class="fw-bold mt-3">Únete a una Empresa </h2>
+                <p class="text-muted">Ingresa el Código Único de la Empresa</p>
+              </div>
+  
+              <form [formGroup]="loginUser" (ngSubmit)="onSubmit()">
+                <mat-form-field appearance="outline" class="w-100 mb-3">
+                  <mat-label>NIT sin dígito de verificación </mat-label>
+                  <input matInput type="email" formControlName="email" aria-label="Correo electrónico">
+                  <mat-error *ngIf="loginUser.get('email')?.invalid && loginUser.get('email')?.touched">
+                    Verifica el NIT.
+                  </mat-error>
+                </mat-form-field>
+  
+                <mat-form-field appearance="outline" class="w-100 mb-4">
+                  <mat-label>Código Unico</mat-label>
+                  <input matInput type="password" formControlName="password" aria-label="Contraseña">
+                  <mat-error *ngIf="loginUser.get('password')?.invalid && loginUser.get('password')?.touched">
+                    El Código único debe tener 6 caracteres.
+                  </mat-error>
+                </mat-form-field>
+  
+                <button type="submit" class="btn btn-primary w-100 py-2 mb-3" [disabled]="loginUser.invalid">
+                  Ingresar
+                </button>
+  
+               

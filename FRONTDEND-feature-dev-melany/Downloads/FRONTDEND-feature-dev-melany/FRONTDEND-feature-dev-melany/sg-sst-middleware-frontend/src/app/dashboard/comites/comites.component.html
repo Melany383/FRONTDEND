@@ -1,0 +1,33 @@
+<div class="card mb-3">
+    <div class="card-header bg-dark text-white">
+      <strong>Próximas Reuniones de Comités</strong>
+    </div>
+    <div class="card-body table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Comité</th>
+            <th>Fecha Próxima</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let comite of comites">
+            <td>{{ comite.nombre }}</td>
+            <td>{{ comite.fechaProxima }}</td>
+            <td>
+              <span class="badge"
+                    [ngClass]="{
+                      'bg-primary': comite.estado === 'Programado',
+                      'bg-warning text-dark': comite.estado === 'Pendiente',
+                      'bg-success': comite.estado === 'Confirmado'
+                    }">
+                {{ comite.estado }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

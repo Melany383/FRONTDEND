@@ -1,0 +1,75 @@
+<section class="welcome-section">
+  <div class="welcome-card mat-elevation-z2">
+    <div class="welcome-content">
+      <div class="welcome-text">
+        <h1>Bienvenido, <strong aria-label="Nombre del usuario">{{ userFullName }}</strong></h1>
+        <p>Panel de control del Sistema de Gestión de Seguridad y Salud en el Trabajo</p>
+      </div>
+     
+    </div>
+  </div>
+</section>
+
+<section class="kpi-section" aria-labelledby="kpi-section-title">
+  <h2 id="kpi-section-title" class="section-title">Indicadores Clave de Rendimiento (KPI's)</h2>
+  <app-indicadores-kpi></app-indicadores-kpi>
+</section>
+
+<section class="dashboard-grid" [class.card-expanded]="!!expandedCard" aria-labelledby="widgets-section-title">
+  <h2 id="widgets-section-title" class="section-title">Módulos del Sistema</h2>
+  <div class="grid-container">
+    <ng-container *ngFor="let widget of widgets; trackBy: trackByWidgetId">
+      <mat-card
+        class="dashboard-card mat-elevation-z2"
+        [class.expanded]="expandedCard === widget.id"
+        (click)="expandCard(widget.id)"
+        (keyup.enter)="expandCard(widget.id)"
+        role="button"
+        tabindex="0"
+        [attr.aria-expanded]="expandedCard === widget.id"
+        [attr.aria-label]="'Abrir módulo ' + widget.title"
+        [attr.data-widget-id]="widget.id"
+      >
+        <mat-card-header>
+          <div mat-card-avatar class="card-icon-wrapper">
+            <mat-icon>{{ widget.icon }}</mat-icon>
+          </div>
+          <mat-card-title>{{ widget.title }}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content *ngIf="expandedCard !== widget.id">
+          <p>Haz clic para ver más detalles</p>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  </div>
+</section>
+
+<ng-container *ngIf="expandedWidget">
+  <div
+    class="overlay-card mat-elevation-z12"
+    [@expandCollapse]="'expanded'"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'expanded-widget-title-' + expandedWidget.id"
+  >
+    <div class="overlay-header">
+      <h2 [id]="'expanded-widget-title-' + expandedWidget.id">{{ expandedWidget.title }}</h2>
+      <button
+  mat-icon-button
+  (click)="closeCard($event)"
+  [attr.aria-label]="'Cerrar módulo ' + expandedWidget.title"
+>
+  <mat-icon>close</mat-icon>
+</button>
+    </div>
+    <div class="overlay-content">
+      <ng-container *ngComponentOutlet="expandedWidget.component"></ng-container>
+    </div>
+  </div>
+  <div
+    class="overlay-backdrop"
+    (click)="closeCard($event)"
+    [@fadeInOut]
+  ></div>
+</ng-container>

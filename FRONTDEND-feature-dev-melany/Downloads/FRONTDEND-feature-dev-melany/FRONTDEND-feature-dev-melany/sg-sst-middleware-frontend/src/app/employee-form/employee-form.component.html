@@ -1,0 +1,223 @@
+<form [formGroup]="employeeForm" (ngSubmit)="enviarFormulario()" class="employee-form">
+
+  <!-- Identificación Personal -->
+  <fieldset formGroupName="identificacionPersonal" class="form-section">
+    <legend>Identificación Personal</legend>
+    
+    <div class="form-group">
+      <label for="nombreCompleto">Nombre completo</label>
+      <input id="nombreCompleto" formControlName="nombreCompleto" placeholder="Nombre completo" />
+      <div *ngIf="employeeForm.get('identificacionPersonal.nombreCompleto')?.touched && 
+                  employeeForm.get('identificacionPersonal.nombreCompleto')?.errors?.['required']" 
+           class="error-message">
+        Este campo es requerido
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="documentoIdentidad">Documento de identidad</label>
+      <input id="documentoIdentidad" formControlName="documentoIdentidad" placeholder="Documento de identidad" />
+    </div>
+
+    <div class="form-group">
+      <label for="sexo">Sexo</label>
+      <select id="sexo" formControlName="sexo">
+        <option value="">Seleccione...</option>
+        <option value="masculino">Masculino</option>
+        <option value="femenino">Femenino</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="fechaNacimiento">Fecha de nacimiento</label>
+      <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento" />
+    </div>
+
+    <div class="form-group">
+      <label for="edad">Edad</label>
+      <input id="edad" formControlName="edad" type="number" />
+    </div>
+
+    <div class="form-group">
+      <label for="estadoCivil">Estado civil</label>
+      <input id="estadoCivil" formControlName="estadoCivil" />
+    </div>
+
+    <div class="form-group">
+      <label for="nacionalidad">Nacionalidad</label>
+      <input id="nacionalidad" formControlName="nacionalidad" />
+    </div>
+  </fieldset>
+
+  <!-- Contacto -->
+  <fieldset formGroupName="contacto" class="form-section">
+    <legend>Información de Contacto</legend>
+    
+    <div class="form-group">
+      <label for="direccion">Dirección</label>
+      <input id="direccion" formControlName="direccion" placeholder="Dirección" />
+    </div>
+
+    <div class="form-group">
+      <label for="telefono">Teléfono</label>
+      <input id="telefono" formControlName="telefono" placeholder="Teléfono" />
+      <div *ngIf="employeeForm.get('contacto.telefono')?.touched && 
+                  employeeForm.get('contacto.telefono')?.errors?.['pattern']" 
+           class="error-message">
+        Ingrese un número de teléfono válido (10 dígitos)
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="correo">Correo electrónico</label>
+      <input id="correo" formControlName="correo" placeholder="Correo electrónico" />
+      <div *ngIf="employeeForm.get('contacto.correo')?.touched && 
+                  employeeForm.get('contacto.correo')?.errors?.['email']" 
+           class="error-message">
+        Ingrese un correo electrónico válido
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- Información de Salud -->
+  <fieldset formGroupName="salud" class="form-section">
+    <legend>Información de Salud</legend>
+    
+    <div class="form-group">
+      <label for="tipoSangre">Tipo de sangre</label>
+      <input id="tipoSangre" formControlName="tipoSangre" placeholder="Tipo de sangre" />
+    </div>
+
+    <div class="form-group">
+      <label for="alergias">Alergias</label>
+      <input id="alergias" formControlName="alergias" placeholder="Alergias" />
+    </div>
+
+    <div class="form-group">
+      <label for="enfermedades">Enfermedades preexistentes</label>
+      <input id="enfermedades" formControlName="enfermedades" placeholder="Enfermedades preexistentes" />
+    </div>
+
+    <div class="form-group">
+      <label for="medicamentos">Medicamentos regulares</label>
+      <input id="medicamentos" formControlName="medicamentos" placeholder="Medicamentos regulares" />
+    </div>
+
+    <div class="form-group">
+      <label for="discapacidad">Discapacidad</label>
+      <input id="discapacidad" formControlName="discapacidad" placeholder="Discapacidad" />
+    </div>
+
+    <div class="form-group">
+      <label for="examenesPrevios">Exámenes médicos previos</label>
+      <input id="examenesPrevios" formControlName="examenesPrevios" placeholder="Exámenes médicos previos" />
+    </div>
+  </fieldset>
+
+  <!-- Información Laboral -->
+  <fieldset formGroupName="laboral" class="form-section">
+    <legend>Información Laboral</legend>
+    
+    <div class="form-group">
+      <label for="cargo">Cargo</label>
+      <input id="cargo" formControlName="cargo" placeholder="Cargo" />
+    </div>
+
+    <div class="form-group">
+      <label for="fechaIngreso">Fecha de ingreso</label>
+      <input id="fechaIngreso" type="date" formControlName="fechaIngreso" />
+    </div>
+
+    <div class="form-group">
+      <label for="tipoContrato">Tipo de contrato</label>
+      <input id="tipoContrato" formControlName="tipoContrato" />
+    </div>
+
+    <div class="form-group">
+      <label for="grupoOcupacional">Grupo ocupacional</label>
+      <input id="grupoOcupacional" formControlName="grupoOcupacional" />
+    </div>
+
+    <div class="form-group">
+      <label for="actividades">Actividades principales</label>
+      <textarea id="actividades" formControlName="actividades" placeholder="Actividades principales"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="horarios">Horarios laborales</label>
+      <input id="horarios" formControlName="horarios" placeholder="Horarios laborales" />
+    </div>
+  </fieldset>
+
+  <!-- Condiciones de Trabajo -->
+  <fieldset formGroupName="condicionesTrabajo" class="form-section">
+    <legend>Condiciones Ambientales y de Trabajo</legend>
+    
+    <div class="form-group">
+      <label for="riesgos">Riesgos laborales</label>
+      <textarea id="riesgos" formControlName="riesgos" placeholder="Riesgos laborales"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="usoEPP">Uso de EPP</label>
+      <textarea id="usoEPP" formControlName="usoEPP" placeholder="Uso de EPP"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="condicionesEntorno">Condiciones del entorno</label>
+      <textarea id="condicionesEntorno" formControlName="condicionesEntorno" placeholder="Condiciones del entorno"></textarea>
+    </div>
+  </fieldset>
+
+  <!-- Familiares y Emergencias -->
+  <fieldset formGroupName="familiares" class="form-section">
+    <legend>Familiares y Dependientes</legend>
+
+    <div formArrayName="dependientes" class="dependientes-container">
+      <div *ngFor="let dep of dependientes.controls; let i = index" [formGroupName]="i" class="dependiente-item">
+        <h4>Dependiente {{i + 1}}</h4>
+        <div class="form-group">
+          <label [for]="'nombreDependiente'+i">Nombre del dependiente</label>
+          <input [id]="'nombreDependiente'+i" formControlName="nombre" placeholder="Nombre del dependiente" />
+        </div>
+        <div class="form-group">
+          <label [for]="'parentesco'+i">Parentesco</label>
+          <input [id]="'parentesco'+i" formControlName="parentesco" placeholder="Parentesco" />
+        </div>
+        <button type="button" (click)="eliminarDependiente(i)" class="btn-remove">Eliminar</button>
+      </div>
+    </div>
+    <button type="button" (click)="agregarDependiente()" class="btn-add">Agregar Dependiente</button>
+
+    <div formGroupName="contactoEmergencia" class="emergency-contact">
+      <h4>Contacto de emergencia</h4>
+      <div class="form-group">
+        <label for="emergencyName">Nombre</label>
+        <input id="emergencyName" formControlName="nombre" placeholder="Nombre de contacto de emergencia" />
+      </div>
+      <div class="form-group">
+        <label for="emergencyPhone">Teléfono</label>
+        <input id="emergencyPhone" formControlName="telefono" placeholder="Teléfono de contacto" />
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- Otros Datos -->
+  <fieldset formGroupName="otros" class="form-section">
+    <legend>Otros Datos Relevantes</legend>
+    
+    <div class="form-group">
+      <label for="nivelEducativo">Nivel educativo</label>
+      <input id="nivelEducativo" formControlName="nivelEducativo" placeholder="Nivel educativo" />
+    </div>
+
+    <div class="form-group">
+      <label for="experienciaLaboral">Experiencia laboral previa</label>
+      <textarea id="experienciaLaboral" formControlName="experienciaLaboral" placeholder="Experiencia laboral previa"></textarea>
+    </div>
+  </fieldset>
+
+  <div class="form-actions">
+    <button type="submit" class="btn-submit">Enviar</button>
+  </div>
+</form>

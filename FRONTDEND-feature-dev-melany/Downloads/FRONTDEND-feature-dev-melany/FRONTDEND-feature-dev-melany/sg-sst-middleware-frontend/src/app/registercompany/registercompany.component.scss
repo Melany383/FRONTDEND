@@ -1,0 +1,392 @@
+@use "sass:color";
+@use "sass:map"; // Explicitly @use sass:map for map.get and map.has-key
+
+// Variables (these are local to this component's SCSS file)
+$colors: (
+  primary: #667eea,
+  primary-light: color.adjust(#667eea, $lightness: 10%),
+  primary-dark: color.adjust(#764ba2, $lightness: -10%),
+  secondary: #764ba2,
+  white: #fff,
+  text: #333,
+  light-bg: #f8f9fa,
+  gray-bg: #e9ecef,
+  gray-text: #495057,
+  light-gray: #adb5bd,
+  border-gray: #dee2e6,
+  error: #f44336,
+  success: #4caf50,
+  warning: #ff9800,
+  info: #2196f3,
+  tittle: #111213
+);
+
+$spacing: (
+  xs: 0.5rem,
+  sm: 1rem,
+  md: 1.5rem,
+  lg: 2rem,
+  xl: 3rem
+);
+
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+$border-radius: (
+  sm: 4px,
+  md: 8px,
+  lg: 12px,
+  xl: 16px
+);
+
+$box-shadow: (
+  sm: 0 2px 4px rgba(0, 0, 0, 0.1),
+  md: 0 4px 8px rgba(0, 0, 0, 0.1),
+  lg: 0 8px 16px rgba(0, 0, 0, 0.1),
+  xl: 0 12px 24px rgba(0, 0, 0, 0.1)
+);
+
+$transition: all 0.3s ease-in-out;
+
+// Mixins
+@mixin respond-to($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) { // Corrected: map.has-key
+    @media (max-width: map.get($breakpoints, $breakpoint)) { // Corrected: map.get
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint '#{$breakpoint}' no existe en el mapa $breakpoints";
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin card-style {
+  background: map.get($colors, white); // Corrected: map.get
+  border-radius: map.get($border-radius, lg); // Corrected: map.get
+  box-shadow: map.get($box-shadow, sm); // Corrected: map.get
+  transition: $transition;
+
+  &:hover {
+    box-shadow: map.get($box-shadow, md); // Corrected: map.get
+  }
+}
+
+// Estilos generales
+.login-section {
+  background: linear-gradient(
+    135deg,
+    map.get($colors, primary) 0%, // Corrected: map.get
+    map.get($colors, secondary) 100% // Corrected: map.get
+  );
+  min-height: 100vh;
+  padding: map.get($spacing, xl) 0; // Corrected: map.get
+
+  @include respond-to(md) {
+    padding: map.get($spacing, lg) 0; // Corrected: map.get
+  }
+}
+
+.login-card {
+  @include card-style;
+  padding: map.get($spacing, xl); // Corrected: map.get
+  border: none;
+
+  @include respond-to(md) {
+    padding: map.get($spacing, lg); // Corrected: map.get
+  }
+
+  @include respond-to(sm) {
+    padding: map.get($spacing, md); // Corrected: map.get
+  }
+}
+
+.text-center {
+  h2 {
+    color: map.get($colors, tittle); // Corrected: map.get
+    font-weight: 700;
+    margin-bottom: map.get($spacing, sm); // Corrected: map.get
+  }
+
+  p {
+    color: map.get($colors, gray-text); // Corrected: map.get
+    margin-bottom: map.get($spacing, lg); // Corrected: map.get
+  }
+}
+
+// Secciones del formulario
+.section-header {
+  @include flex-center;
+  margin-bottom: map.get($spacing, lg); // Corrected: map.get
+  padding-bottom: map.get($spacing, sm); // Corrected: map.get
+  border-bottom: 2px solid map.get($colors, primary); // Corrected: map.get
+
+  mat-icon {
+    color: map.get($colors, primary); // Corrected: map.get
+    margin-right: map.get($spacing, sm); // Corrected: map.get
+  }
+
+  h3 {
+    color: map.get($colors, primary); // Corrected: map.get
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+// Campos del formulario
+mat-form-field {
+  width: 100%;
+  margin-bottom: map.get($spacing, md); // Corrected: map.get
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+
+  .mat-form-field-outline {
+    background-color: map.get($colors, white); // Corrected: map.get
+    border-radius: map.get($border-radius, sm); // Corrected: map.get
+  }
+
+  &.mat-focused {
+    .mat-form-field-outline-thick {
+      color: map.get($colors, primary); // Corrected: map.get
+    }
+
+    .mat-form-field-label {
+      color: map.get($colors, primary); // Corrected: map.get
+    }
+  }
+
+  .mat-icon {
+    color: map.get($colors, gray-text); // Corrected: map.get
+  }
+
+  .mat-error {
+    font-size: 0.75rem;
+    margin-top: map.get($spacing, xs); // Corrected: map.get
+  }
+}
+
+// Botones
+button[mat-raised-button] {
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  border-radius: map.get($border-radius, md); // Corrected: map.get
+  transition: $transition;
+
+  mat-icon {
+    margin-right: map.get($spacing, xs); // Corrected: map.get
+  }
+
+  &[color="primary"] {
+    background-color: map.get($colors, primary); // Corrected: map.get
+
+    &:hover:not([disabled]) {
+      background-color: map.get($colors, primary-dark); // Corrected: map.get
+      box-shadow: map.get($box-shadow, md); // Corrected: map.get
+    }
+  }
+}
+
+// Sección de actividad económica
+.economic-activity-section {
+  .selected-activity {
+    margin-top: map.get($spacing, md); // Corrected: map.get
+    width: 100%; // Asegura que ocupe todo el ancho disponible
+
+    mat-chip-set {
+      width: 100%;
+      display: block;
+
+      mat-chip {
+        background-color: map.get($colors, primary) !important; // Corrected: map.get
+        color: map.get($colors, white) !important; // Corrected: map.get
+        font-size: 0.9rem;
+        padding: 12px 16px !important; // Sobrescribe el padding de Angular Material
+        border-radius: map.get($border-radius, md) !important; // Corrected: map.get
+        white-space: normal !important; // Permite saltos de línea
+        height: auto !important; // Altura automática según contenido
+        min-height: unset !important; // Elimina altura mínima
+        max-width: 100%; // No exceder el ancho del contenedor
+
+        // Estilo para el texto
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        line-height: 1.4;
+        word-break: break-word; // Rompe palabras largas
+
+        // Estilo para los saltos de línea
+        br {
+          content: ' ';
+          display: block;
+          margin: 4px 0;
+        }
+
+        // Estilo para el botón de remover
+        .mat-mdc-chip-remove {
+          color: map.get($colors, white); // Corrected: map.get
+          opacity: 0.8;
+          margin-left: auto; // Alinea a la derecha
+          margin-top: 4px;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}
+// Sobrescribe estilos de Bootstrap que interfieren
+.selected-activity-container {
+  margin-top: 1rem;
+  width: 100%;
+
+  mat-chip-set {
+    display: block !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+
+    .custom-chip {
+      // Reset de estilos de Bootstrap
+      all: unset;
+      -webkit-all: unset;
+
+      // Estilos personalizados
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+      min-height: unset !important;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      background-color: map.get($colors, light-gray) !important; // Corrected: map.get
+      color: white !important;
+      border-radius: 16px !important;
+      padding: 12px 16px !important;
+      margin: 0 !important;
+      white-space: normal !important;
+      word-break: break-word !important;
+      line-height: 1.4 !important;
+
+      // Contenido del chip
+      .chip-content-wrapper {
+        text-wrap: auto;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+
+        .chip-line {
+          margin: 2px 0;
+        }
+      }
+
+      // Botón de remover
+      .mat-mdc-chip-remove {
+        margin-left: 8px !important;
+        color: white !important;
+        opacity: 0.8;
+
+        &:hover {
+          opacity: 1;
+        }
+
+        mat-icon {
+          font-size: 18px !important;
+          width: 18px !important;
+          height: 18px !important;
+        }
+      }
+    }
+  }
+}
+
+// Versión responsiva
+@media (max-width: 768px) {
+  .selected-activity-container .custom-chip {
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+// Versión responsiva
+@include respond-to(md) {
+  .economic-activity-section .selected-activity mat-chip {
+    font-size: 0.85rem;
+    padding: 8px 12px !important;
+  }
+}
+// Modal
+.modal {
+  .modal-content {
+    border-radius: map.get($border-radius, lg); // Corrected: map.get
+    overflow: hidden;
+    border: none;
+  }
+
+  .modal-header {
+    background: linear-gradient(135deg, map.get($colors, primary), map.get($colors, primary-dark)); // Corrected: map.get
+    color: map.get($colors, white); // Corrected: map.get
+    padding: map.get($spacing, lg); // Corrected: map.get
+
+    h2 {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .btn-close {
+      filter: brightness(0) invert(1);
+    }
+  }
+
+  .modal-footer {
+    background-color: map.get($colors, light-bg); // Corrected: map.get
+    padding: map.get($spacing, md); // Corrected: map.get
+
+    button {
+      @include flex-center;
+      padding: 0.5rem 1.25rem;
+    }
+  }
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+// Responsive
+@include respond-to(md) {
+  .login-card {
+    padding: map.get($spacing, lg); // Corrected: map.get
+  }
+
+  .row.g-3 > [class^="col-"] {
+    padding-bottom: map.get($spacing, sm); // Corrected: map.get
+  }
+}
+
+@include respond-to(sm) {
+  .login-card {
+    padding: map.get($spacing, md); // Corrected: map.get
+    box-shadow: none;
+    border: 1px solid map.get($colors, border-gray); // Corrected: map.get
+  }
+
+  .section-header {
+    margin-bottom: map.get($spacing, md); // Corrected: map.get
+  }
+}

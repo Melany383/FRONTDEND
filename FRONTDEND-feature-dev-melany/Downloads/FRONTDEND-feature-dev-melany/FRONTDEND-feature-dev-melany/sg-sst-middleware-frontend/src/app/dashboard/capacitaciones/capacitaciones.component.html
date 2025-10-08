@@ -1,0 +1,16 @@
+<div class="card mb-3">
+    <div class="card-header bg-primary text-white">
+      <strong>Estado de Capacitaciones</strong>
+    </div>
+    <div class="card-body">
+      <div *ngFor="let cap of capacitaciones" class="mb-3">
+        <label>{{ cap.tema }} ({{ cap.completado }}%)</label>
+        <div class="progress">
+          <div class="progress-bar bg-info" role="progressbar" [style.width.%]="cap.completado">
+            {{ cap.completado }}%
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

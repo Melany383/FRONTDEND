@@ -1,0 +1,325 @@
+<div class="matrix-container">
+  <h2>Matriz de Identificación de Peligros, Evaluación y Valoración de los Riesgos</h2>
+
+  <div class="button-group">
+    <button (click)="toggleInstructions()">{{ showInstructions ? 'Ocultar' : 'Mostrar' }} Instrucciones</button>
+    <button (click)="addNewEntry()">Agregar Nueva Evaluación de Riesgo</button>
+    <button (click)="downloadPdf()">Descargar PDF</button>
+    <button (click)="downloadExcel()">Descargar Excel</button>
+  </div>
+
+  <div *ngIf="showInstructions" class="instructions-panel">
+    <h3>Instrucciones de la Matriz</h3>
+    <div [innerHtml]="matrixHtml"></div>
+    </div>
+
+  <div *ngIf="showForm" class="risk-form-panel">
+    <h3>{{ selectedEntry ? 'Editar' : 'Agregar Nueva' }} Evaluación de Riesgo</h3>
+    <form [formGroup]="riskAssessmentForm" (ngSubmit)="onSaveForm()">
+
+      <h4>1. Identificación del Riesgo</h4>
+      <div class="form-row">
+        <div class="form-group col-full">
+          <label for="actividadCargo">Actividad / Cargo:</label>
+          <input id="actividadCargo" formControlName="actividadCargo" type="text">
+          <div *ngIf="riskAssessmentForm.get('actividadCargo')?.invalid && riskAssessmentForm.get('actividadCargo')?.touched" class="error-message">
+            Actividad / Cargo es requerido.
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-half">
+          <label for="factorRiesgo">Factor de Riesgo:</label>
+          <input id="factorRiesgo" formControlName="factorRiesgo" type="text">
+          <div *ngIf="riskAssessmentForm.get('factorRiesgo')?.invalid && riskAssessmentForm.get('factorRiesgo')?.touched" class="error-message">
+            Factor de Riesgo es requerido.
+          </div>
+        </div>
+        <div class="form-group col-half">
+          <label for="peligroFuenteFactorRiesgo">Peligro o Fuente del Factor de Riesgo:</label>
+          <input id="peligroFuenteFactorRiesgo" formControlName="peligroFuenteFactorRiesgo" type="text">
+          <div *ngIf="riskAssessmentForm.get('peligroFuenteFactorRiesgo')?.invalid && riskAssessmentForm.get('peligroFuenteFactorRiesgo')?.touched" class="error-message">
+            Peligro o Fuente es requerido.
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-full">
+          <label for="posiblesConsecuencias">Posibles Consecuencias:</label>
+          <textarea id="posiblesConsecuencias" formControlName="posiblesConsecuencias"></textarea>
+          <div *ngIf="riskAssessmentForm.get('posiblesConsecuencias')?.invalid && riskAssessmentForm.get('posiblesConsecuencias')?.touched" class="error-message">
+            Posibles Consecuencias son requeridas.
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-quarter checkbox-group">
+          <label for="actividadRutinaria">Actividad Rutinaria:</label>
+          <input id="actividadRutinaria" formControlName="actividadRutinaria" type="checkbox">
+        </div>
+        <div class="form-group col-quarter checkbox-group">
+          <label for="actividadNoRutinaria">Actividad No Rutinaria:</label>
+          <input id="actividadNoRutinaria" formControlName="actividadNoRutinaria" type="checkbox">
+        </div>
+        <div class="form-group col-quarter">
+          <label for="expuestosVinculados">Nro. Expuestos Vinculados:</label>
+          <input id="expuestosVinculados" formControlName="expuestosVinculados" type="number">
+        </div>
+        <div class="form-group col-quarter">
+          <label for="expuestosTemporalesCooperativas">Nro. Expuestos Temp. / Cooperativas:</label>
+          <input id="expuestosTemporalesCooperativas" formControlName="expuestosTemporalesCooperativas" type="number">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-half">
+          <label for="expuestosTotal">Nro. Expuestos Total:</label>
+          <input id="expuestosTotal" formControlName="expuestosTotal" type="number"> </div>
+        <div class="form-group col-half">
+          <label for="horasExposicionDia">Horas de Exposición / Día:</label>
+          <input id="horasExposicionDia" formControlName="horasExposicionDia" type="number">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-full">
+          <label for="fuenteGeneradoraDetalle">Fuente Generadora / Detalle:</label>
+          <textarea id="fuenteGeneradoraDetalle" formControlName="fuenteGeneradoraDetalle"></textarea>
+        </div>
+      </div>
+
+      <h4>2. Controles Existentes</h4>
+      <div class="form-row">
+        <div class="form-group col-half">
+          <label for="controlExistenteFuente">En la Fuente:</label>
+          <textarea id="controlExistenteFuente" formControlName="controlExistenteFuente"></textarea>
+        </div>
+        <div class="form-group col-half">
+          <label for="controlExistenteMedio">En el Medio:</label>
+          <textarea id="controlExistenteMedio" formControlName="controlExistenteMedio"></textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-half">
+          <label for="controlExistentePersonas">En las Personas:</label>
+          <textarea id="controlExistentePersonas" formControlName="controlExistentePersonas"></textarea>
+        </div>
+        <div class="form-group col-half">
+          <label for="controlExistenteMetodo">Método:</label>
+          <textarea id="controlExistenteMetodo" formControlName="controlExistenteMetodo"></textarea>
+        </div>
+      </div>
+
+      <h4>3. Evaluación del Riesgo</h4>
+      <div class="form-row">
+        <div class="form-group col-quarter">
+          <label for="probabilidad">Probabilidad:</label>
+          <select id="probabilidad" formControlName="probabilidad">
+            <option value="">Seleccione</option>
+            <option *ngFor="let option of probabilidadOptions" [value]="option">{{ option }}</option>
+          </select>
+          <div *ngIf="riskAssessmentForm.get('probabilidad')?.invalid && riskAssessmentForm.get('probabilidad')?.touched" class="error-message">
+            Probabilidad es requerida.
+          </div>
+        </div>
+        <div class="form-group col-quarter">
+          <label for="probabilidadNumero">Probabilidad (Número):</label>
+          <input id="probabilidadNumero" formControlName="probabilidadNumero" type="number"> </div>
+        <div class="form-group col-quarter">
+          <label for="consecuencias">Consecuencias:</label>
+          <select id="consecuencias" formControlName="consecuencias">
+            <option value="">Seleccione</option>
+            <option *ngFor="let option of consecuenciasOptions" [value]="option">{{ option }}</option>
+          </select>
+          <div *ngIf="riskAssessmentForm.get('consecuencias')?.invalid && riskAssessmentForm.get('consecuencias')?.touched" class="error-message">
+            Consecuencias son requeridas.
+          </div>
+        </div>
+        <div class="form-group col-quarter">
+          <label for="consecuenciasNumero">Consecuencias (Número):</label>
+          <input id="consecuenciasNumero" formControlName="consecuenciasNumero" type="number"> </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-half">
+          <label for="estimacionRiesgoGradoVr">Estimación del Riesgo (VR):</label>
+          <input id="estimacionRiesgoGradoVr" formControlName="estimacionRiesgoGradoVr" type="number"> </div>
+        <div class="form-group col-half">
+          <label for="interpretacion">Interpretación:</label>
+          <input id="interpretacion" formControlName="interpretacion" type="text"> </div>
+      </div>
+
+      <h4>4. Planes de Acción</h4>
+      <div class="form-row">
+        <div class="form-group col-half">
+          <label for="planEliminacion">Eliminación:</label>
+          <textarea id="planEliminacion" formControlName="planEliminacion"></textarea>
+        </div>
+        <div class="form-group col-half">
+          <label for="planSustitucion">Sustitución:</label>
+          <textarea id="planSustitucion" formControlName="planSustitucion"></textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-half">
+          <label for="planControlesIngenieria">Controles de Ingeniería:</label>
+          <textarea id="planControlesIngenieria" formControlName="planControlesIngenieria"></textarea>
+        </div>
+        <div class="form-group col-half">
+          <label for="planControlesAdministrativos">Controles Administrativos:</label>
+          <textarea id="planControlesAdministrativos" formControlName="planControlesAdministrativos"></textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-half">
+          <label for="planEpp">EPP (Equipos de Protección Personal):</label>
+          <textarea id="planEpp" formControlName="planEpp"></textarea>
+        </div>
+        <div class="form-group col-quarter">
+          <label for="planNumero">Plan #:</label>
+          <input id="planNumero" formControlName="planNumero" type="text">
+        </div>
+        <div class="form-group col-quarter">
+          <label for="planVr">Plan VR:</label>
+          <input id="planVr" formControlName="planVr" type="text">
+        </div>
+      </div>
+
+      <h4>5. Información Adicional</h4>
+      <div class="form-row">
+        <div class="form-group col-half">
+          <label for="responsable">Responsable:</label>
+          <input id="responsable" formControlName="responsable" type="text">
+          <div *ngIf="riskAssessmentForm.get('responsable')?.invalid && riskAssessmentForm.get('responsable')?.touched" class="error-message">
+            Responsable es requerido.
+          </div>
+        </div>
+        <div class="form-group col-half">
+          <label for="fechaCumplimiento">Fecha de Cumplimiento:</label>
+          <input id="fechaCumplimiento" formControlName="fechaCumplimiento" type="date">
+          <div *ngIf="riskAssessmentForm.get('fechaCumplimiento')?.invalid && riskAssessmentForm.get('fechaCumplimiento')?.touched" class="error-message">
+            Fecha de Cumplimiento es requerida.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="!riskAssessmentForm.valid">Guardar</button>
+        <button type="button" (click)="onCancelForm()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="table-responsive">
+    <table class="risk-table">
+      <thead>
+        <tr>
+          <th rowspan="2">Actividad / Cargo</th>
+          <th rowspan="2">Factor de Riesgo</th>
+          <th rowspan="2">Peligro o Fuente del Factor de Riesgo</th>
+          <th rowspan="2">Posibles Consecuencias</th>
+          <th colspan="2">Actividad</th>
+          <th colspan="3">Nro. Expuestos</th>
+          <th rowspan="2">Horas de Exposición / Día</th>
+          <th rowspan="2">Fuente Generadora / Detalle</th>
+
+          <th colspan="4">Controles Existentes</th>
+
+          <th colspan="5">Evaluación del Riesgo</th>
+
+          <th colspan="7">Planes de Acción</th>
+
+          <th rowspan="2">Responsable</th>
+          <th rowspan="2">Fecha de Cumplimiento</th>
+        </tr>
+        <tr>
+          <th>Rutinaria</th>
+          <th>No Rutinaria</th>
+          <th>Vinculados</th>
+          <th>Temporales / Cooperativas</th>
+          <th>Total</th>
+          <th>En la Fuente</th>
+          <th>En el Medio</th>
+          <th>En las Personas</th>
+          <th>Método</th>
+          <th>Probabilidad</th>
+          <th>Probabilidad (Número)</th>
+          <th>Consecuencias</th>
+          <th>Consecuencias (Número)</th>
+          <th>Estimación del Riesgo (VR)</th>
+          <th>Eliminación</th>
+          <th>Sustitución</th>
+          <th>Controles de Ingeniería</th>
+          <th>Controles Administrativos</th>
+          <th>EPP</th>
+          <th>Plan #</th>
+          <th>Plan VR</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let entry of riskEntries; let i = index; trackBy: trackByEntryId">
+          <tr (click)="onSelectRow(entry)" [class.selected]="selectedEntry?.id === entry.id">
+            <td *ngIf="getActividadCargoRowspan(i) > 0" [attr.rowspan]="getActividadCargoRowspan(i)">
+              {{ entry.actividadCargo }}
+            </td>
+            <td>{{ entry.factorRiesgo }}</td>
+            <td>{{ entry.peligroFuenteFactorRiesgo }}</td>
+            <td>{{ entry.posiblesConsecuencias }}</td>
+            <td>{{ entry.actividadRutinaria ? 'Sí' : 'No' }}</td>
+            <td>{{ entry.actividadNoRutinaria ? 'Sí' : 'No' }}</td>
+            <td>{{ entry.expuestosVinculados }}</td>
+            <td>{{ entry.expuestosTemporalesCooperativas }}</td>
+            <td>{{ entry.expuestosTotal }}</td>
+            <td>{{ entry.horasExposicionDia }}</td>
+            <td>{{ entry.fuenteGeneradoraDetalle }}</td>
+
+            <td>{{ entry.controlExistenteFuente }}</td>
+            <td>{{ entry.controlExistenteMedio }}</td>
+            <td>{{ entry.controlExistentePersonas }}</td>
+            <td>{{ entry.controlExistenteMetodo }}</td>
+
+            <td>{{ entry.probabilidad }}</td>
+            <td>{{ entry.probabilidadNumero }}</td>
+            <td>{{ entry.consecuencias }}</td>
+            <td>{{ entry.consecuenciasNumero }}</td>
+            <td>{{ entry.estimacionRiesgoGradoVr }}</td>
+            <td [class]="getRiskColorClass(entry.interpretacion)">{{ entry.interpretacion }}</td>
+
+            <td>{{ entry.planEliminacion }}</td>
+            <td>{{ entry.planSustitucion }}</td>
+            <td>{{ entry.planControlesIngenieria }}</td>
+            <td>{{ entry.planControlesAdministrativos }}</td>
+            <td>{{ entry.planEpp }}</td>
+            <td>{{ entry.planNumero }}</td>
+            <td>{{ entry.planVr }}</td>
+
+            <td>{{ entry.responsable }}</td>
+            <td>{{ entry.fechaCumplimiento }}</td>
+          </tr>
+        </ng-container>
+        <tr *ngIf="riskEntries.length === 0">
+          <td colspan="31" style="text-align: center;">No hay datos de evaluación de riesgos para mostrar.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="riskEntries.length > 0" class="risk-summary-panel">
+    <h3>Resumen de la Evaluación de Riesgos</h3>
+    <div class="summary-table-container">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>Interpretación de Riesgo</th>
+            <th>Cantidad de Ítems</th>
+            <th>Porcentaje</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of riskSummary | keyvalue">
+            <td [class]="getRiskColorClass(item.key)">{{ item.key }}</td>
+            <td>{{ item.value.count }}</td>
+            <td>{{ item.value.percentage | number:'1.2-2' }}%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

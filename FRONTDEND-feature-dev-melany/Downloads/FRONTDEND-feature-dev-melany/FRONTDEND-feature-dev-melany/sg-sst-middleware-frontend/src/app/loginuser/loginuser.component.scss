@@ -1,0 +1,100 @@
+@use '../../styles.scss' as app-styles;
+@use "sass:map";
+@use "sass:color";
+
+/* Sección Login */
+.login-section {
+  background: linear-gradient(
+    135deg,
+    map.get(app-styles.$colors, primary) 0%, 
+    map.get(app-styles.$colors, secondary) 100% 
+  );
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tarjeta de Login */
+.login-card {
+  border-radius: 12px;
+  background: map.get(app-styles.$colors, white); 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  padding: 2rem;
+
+  &:hover {
+    transform: translateY(-5px);
+    
+    box-shadow: 0 10px 25px rgba(map.get(app-styles.$colors, primary), 0.15) !important;
+  }
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 576px) {
+  .login-card {
+    padding: 1.5rem;
+    margin: 0 15px;
+  }
+}
+
+/* Estilos para Angular Material */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: rgba(map.get(app-styles.$colors, primary), 0.3); 
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: map.get(app-styles.$colors, primary); 
+}
+
+.mat-input-element {
+  caret-color: map.get(app-styles.$colors, primary); 
+}
+
+/* Botón principal */
+.btn-primary {
+  background: linear-gradient(
+    135deg,
+    map.get(app-styles.$colors, primary) 0%, 
+     
+    color.adjust(map.get(app-styles.$colors, primary-dark), $lightness: 10%) 100%
+  );
+  color: map.get(app-styles.$colors, white); 
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+     
+    box-shadow: 0 4px 12px rgba(color.adjust(map.get(app-styles.$colors, primary), $lightness: -15%), 0.25);
+  }
+}
+
+/* Enlaces */
+.text-primary {
+  color: map.get(app-styles.$colors, primary) !important; 
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+     
+    color: color.adjust(map.get(app-styles.$colors, primary), $lightness: -15%) !important;
+    text-decoration: underline;
+    
+  }
+}
+
+.alert {
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #842029;
+  border: 1px solid #f5c2c7;
+}

@@ -1,0 +1,71 @@
+
+<div class="container">
+  @if (isAdmin){
+  <h2 >Configuración de la Empresa</h2>
+  
+  <div class="config-container p-4" *ngIf="!isLoading; else loading">
+    <!-- Menú de selección -->
+    <nav class="nav nav-pills flex-column flex-sm-row mb-4">
+      <a *ngFor="let section of sections" 
+         class="flex-sm-fill text-sm-center nav-link"
+         [ngClass]="{active: selectedSection === section.id}"
+         (click)="selectSection(section.id)">
+        {{section.label}}
+      </a>
+    </nav>
+  
+    <!-- Contenido dinámico -->
+    <ng-container [ngSwitch]="selectedSection">
+      <div *ngSwitchCase="'empleados'">
+        <app-employees></app-employees>
+      </div>
+      
+      <div *ngSwitchCase="'riesgos'">
+        <h4>Gestión de Riesgos</h4>
+        <textarea class="form-control mb-3" 
+                  [(ngModel)]="companyConfig.riskPolicy" 
+                  placeholder="Describe la política de gestión de riesgos..."
+                  rows="5"></textarea>
+        <button class="btn btn-primary" (click)="saveConfig()" [disabled]="isLoading">
+          {{isLoading ? 'Guardando...' : 'Guardar'}}
+        </button>
+      </div>
+      
+      <div *ngSwitchCase="'accidentes'">
+        <h4>Protocolo de Accidentes</h4>
+        <textarea class="form-control mb-3" 
+                  [(ngModel)]="companyConfig.accidentProtocol" 
+                  placeholder="Describe el protocolo en caso de accidentes..."
+                  rows="5"></textarea>
+        <button class="btn btn-primary" (click)="saveConfig()" [disabled]="isLoading">
+          {{isLoading ? 'Guardando...' : 'Guardar'}}
+        </button>
+      </div>
+      
+      <div *ngSwitchCase="'capacitaciones'">
+        <h4>Capacitaciones</h4>
+        <input type="text" class="form-control mb-3" 
+               [(ngModel)]="companyConfig.trainingPlan" 
+               placeholder="Especifica el plan de capacitación...">
+        <button class="btn btn-primary" (click)="saveConfig()" [disabled]="isLoading">
+          {{isLoading ? 'Guardando...' : 'Guardar'}}
+        </button>
+      </div>
+    </ng-container>
+  </div>
+  
+  <ng-template #loading>
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-2">Cargando configuración...</p>
+    </div>
+  </ng-template>
+}  
+  <!-- Mensaje para no administradores -->
+  <div *ngIf="!isAdmin" class="alert alert-warning mt-4">
+    <i class="bi bi-exclamation-triangle me-2"></i>
+    Solo los administradores tienen acceso a esta sección.
+  </div>
+</div>
