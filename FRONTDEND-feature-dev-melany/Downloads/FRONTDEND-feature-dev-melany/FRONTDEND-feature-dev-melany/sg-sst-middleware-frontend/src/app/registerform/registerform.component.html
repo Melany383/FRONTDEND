@@ -105,43 +105,43 @@
 
 
              <mat-form-field appearance="outline" class="w-100 mb-4">
-  <mat-label>Contraseña</mat-label>
-
-  <input
-    matInput
-    [type]="hidePassword ? 'password' : 'text'"
-    formControlName="password"
-    aria-label="Password"
-  />
-  <button
-    mat-icon-button
-    matSuffix
-    type="button"
-    (click)="hidePassword = !hidePassword"
-    [attr.aria-label]="hidePassword ? 'Mostrar contraseña' : 'Ocultar contraseña'"
-  >
-    <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
-  </button>
-
-  
-
-  <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
-    Contraseña es requerido
-  </mat-error>
-  
-
-  <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
-    Contraseña debe tener al menos 6 caracteres
-  </mat-error>
-
-  <mat-error *ngIf="registerForm.get('password')?.hasError('maxlength') && registerForm.get('password')?.touched">
-    La contraseña no puede tener más de 12 caracteres.
-  </mat-error>
-
-  <!-- 👇 Validación alfanumérica + carácter especial -->
-  <mat-error *ngIf="registerForm.get('password')?.hasError('pattern') && registerForm.get('password')?.touched">
-    La contraseña debe incluir letras, números y al menos un carácter especial (@, #, $, !, etc.).
-  </mat-error>
+            <mat-label>Contraseña</mat-label>
+            
+              <input
+                matInput
+                [type]="hidePassword ? 'password' : 'text'"
+                formControlName="password"
+                aria-label="Password"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="hidePassword = !hidePassword"
+                [attr.aria-label]="hidePassword ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+              >
+                <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+              </button>
+            
+              
+            
+              <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
+                Contraseña es requerido
+              </mat-error>
+              
+            
+              <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
+                Contraseña debe tener al menos 6 caracteres
+              </mat-error>
+            
+              <mat-error *ngIf="registerForm.get('password')?.hasError('maxlength') && registerForm.get('password')?.touched">
+                La contraseña no puede tener más de 12 caracteres.
+              </mat-error>
+            
+             
+              <mat-error *ngIf="registerForm.get('password')?.hasError('pattern') && registerForm.get('password')?.touched">
+                La contraseña debe incluir letras, números y al menos un carácter especial (@, #, $, !, etc.).
+              </mat-error>
 
   
 </mat-form-field>
