@@ -125,24 +125,43 @@
             <div *ngIf="showResetPassword">
               <h5 class="text-center mb-3">Restablecer contraseña</h5>
               <form [formGroup]="resetPasswordForm" (ngSubmit)="submitNewPassword()">
-                <mat-form-field appearance="outline" class="w-100 mb-3">
-                  <mat-label>Nueva contraseña</mat-label>
-                  <input matInput type="password" formControlName="newPassword" (input)="updatePasswordsMatch()">
-                  <mat-error *ngIf="resetPasswordForm.get('newPassword')?.hasError('required')">
-                    La contraseña es obligatoria.
-                  </mat-error>
-                  <mat-error *ngIf="resetPasswordForm.get('newPassword')?.hasError('minlength')">
-                    Debe tener al menos 6 caracteres.
-                  </mat-error>
-                  <mat-error *ngIf="resetPasswordForm.get('newPassword')?.hasError('maxlength')">
-                    No puede tener más de 12 caracteres.
-                  </mat-error>
-                </mat-form-field>
+               <mat-form-field appearance="outline" class="w-100 mb-3">
+                <mat-label>Nueva contraseña</mat-label>
+                <input 
+                  matInput 
+                  [type]="hideNewPassword ? 'password' : 'text'" 
+                  formControlName="newPassword" 
+                  (input)="updatePasswordsMatch()">
+
+                <button mat-icon-button matSuffix type="button" (click)="hideNewPassword = !hideNewPassword">
+                  <mat-icon>{{ hideNewPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+
+                <mat-error *ngIf="resetPasswordForm.get('newPassword')?.hasError('required')">
+                  La contraseña es obligatoria.
+                </mat-error>
+                <mat-error *ngIf="resetPasswordForm.get('newPassword')?.hasError('minlength')">
+                  Debe tener al menos 6 caracteres.
+                </mat-error>
+                <mat-error *ngIf="resetPasswordForm.get('newPassword')?.hasError('maxlength')">
+                  No puede tener más de 12 caracteres.
+                </mat-error>
+              </mat-form-field>
+
 
                 <mat-form-field appearance="outline" class="w-100 mb-3">
-                  <mat-label>Confirmar contraseña</mat-label>
-                  <input matInput type="password" formControlName="confirmPassword" (input)="updatePasswordsMatch()">
-                </mat-form-field>
+                <mat-label>Confirmar contraseña</mat-label>
+                <input 
+                  matInput 
+                  [type]="hideConfirmPassword ? 'password' : 'text'" 
+                  formControlName="confirmPassword" 
+                  (input)="updatePasswordsMatch()">
+
+                <button mat-icon-button matSuffix type="button" (click)="hideConfirmPassword = !hideConfirmPassword">
+                  <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+              </mat-form-field>
+
 
                 <p *ngIf="!passwordsMatch" class="text-danger text-center">
                   Las contraseñas no coinciden.

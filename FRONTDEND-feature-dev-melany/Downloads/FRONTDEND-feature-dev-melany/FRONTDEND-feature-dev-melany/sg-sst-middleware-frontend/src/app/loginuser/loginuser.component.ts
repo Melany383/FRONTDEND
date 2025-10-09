@@ -37,6 +37,9 @@ export class LoginuserComponent implements OnInit {
   errorMessage: string | null = null;
   loading = false;
   hidePassword: boolean = true;
+  hideNewPassword: boolean = true;
+  hideConfirmPassword: boolean = true;
+
   
   
   recoverForm!: FormGroup;

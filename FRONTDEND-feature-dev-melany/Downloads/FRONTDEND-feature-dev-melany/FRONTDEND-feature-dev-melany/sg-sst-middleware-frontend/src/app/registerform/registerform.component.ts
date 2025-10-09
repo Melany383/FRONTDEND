@@ -36,8 +36,21 @@ export class RegisterformComponent {
     private router: Router
   ) {
     this.registerForm = this.fb.group({
-      nombres: ['', Validators.required],
-      apellidos: ['', Validators.required],
+  nombres: [
+    '',
+    [
+      Validators.required,
+      Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/) 
+    ]
+  ],
+  apellidos: [
+    '',
+    [
+      Validators.required,
+      Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/) 
+    ]
+  ],
+
       email: ['', [Validators.required, Validators.email, this.noSpacesValidator]],
        telefono: [
                 '',
@@ -48,7 +61,18 @@ export class RegisterformComponent {
       Validators.maxLength(10)         // máximo 10
     ]
   ],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(12)]],
+      password: [
+  '',
+  [
+    Validators.required,
+    Validators.minLength(6),
+    Validators.maxLength(12),
+    Validators.pattern(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,12}$/)
+
+  ]
+],
+
+
       confirmPassword: ['', Validators.required],
       
     }, { validator: this.passwordMatchValidator });
@@ -88,7 +112,7 @@ export class RegisterformComponent {
         this.loading = false;
         this.successMessage = '¡Registro exitoso! Redirigiendo...';
       },
-      error: (err) => {
+      error: (err: { error: { message: string; }; }) => {
         this.loading = false;
         this.errorMessage = err.error?.message || 'Error al registrar. Por favor, inténtalo de nuevo.';
 
